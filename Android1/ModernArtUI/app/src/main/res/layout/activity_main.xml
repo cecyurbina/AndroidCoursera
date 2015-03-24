@@ -1,25 +1,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity"
-    android:layout_centerInParent="true"
-    >
+    android:background="#000"
+    android:id="@+id/linear" >
 
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/canvas"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true" />
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="250dp"
+        android:gravity="left"
+        android:layout_alignParentBottom="true">
 
         <SeekBar
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:id="@+id/seekBar"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true" />
-    </RelativeLayout>
+            android:layout_below="@+id/buttons"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="0"
+            />
+
+    </LinearLayout>
+
+
 </RelativeLayout>

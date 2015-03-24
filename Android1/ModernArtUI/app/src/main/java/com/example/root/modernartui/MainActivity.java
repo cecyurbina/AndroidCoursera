@@ -1,17 +1,23 @@
 package com.example.root.modernartui;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,9 +35,33 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       RelativeLayout canvasLayout = (RelativeLayout)findViewById(R.id.canvas);
+        LinearLayout canvasLayout = (LinearLayout)findViewById(R.id.canvas);
+        SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
         canvas = new CanvasView(this);
         canvasLayout.addView(canvas);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                int stepSize = 7;
+                progress = ((int)Math.round(progress/stepSize))*stepSize;
+                seekBar.setProgress(progress);
+                canvas.invalidate();
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
 
     }
 
@@ -53,6 +83,7 @@ public class MainActivity extends ActionBarActivity {
         }
 
         protected void calculatePoints(){
+
             lenSquare = (int) Math.ceil(heightMax/sub_fibonacci.get(0));
             Paint paint =new Paint();
             paint.setStyle(Paint.Style.FILL);
@@ -65,10 +96,10 @@ public class MainActivity extends ActionBarActivity {
             int lenRectangle;
             for (int item : sub_fibonacci) {
                 Random rnd = new Random();
-                paint.setARGB(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
                 System.out.println("Count is: " + item);
                 lenRectangle = lenSquare * item;
                 if (sub_fibonacci.get(0) == item){
+                    paint.setARGB(200, rnd.nextInt(256), rnd.nextInt(256), 255);
                     x_origin = 0;
                     y_origin = 0;
                     mCanvas.drawRect(x_origin, y_origin, lenRectangle, lenRectangle, paint);
@@ -76,6 +107,7 @@ public class MainActivity extends ActionBarActivity {
                 }
                 else {
                     if (nextDirection.equals("right")){
+                        paint.setARGB(220, 255, rnd.nextInt(256), rnd.nextInt(256));
                         nextDirection = "bottom";
                         x_origin = past_x_origin+past_len;
                         y_origin = past_y_origin;
@@ -84,6 +116,7 @@ public class MainActivity extends ActionBarActivity {
                                     (lenRectangle)+(past_y_origin), paint);
                     }
                     else if(nextDirection.equals("bottom")){
+                        paint.setARGB(255, rnd.nextInt(256), rnd.nextInt(256), 255);
                         nextDirection = "left";
                         x_origin = past_x_origin+past_len-lenRectangle;
                         y_origin = past_y_origin+past_len;
@@ -92,6 +125,7 @@ public class MainActivity extends ActionBarActivity {
                                 past_y_origin+past_len+(lenRectangle), paint);
                     }
                     else if(nextDirection.equals("left")){
+                        paint.setARGB(255, 255, 255, 255);
                         nextDirection = "up";
                         x_origin = past_x_origin-lenRectangle;
                         y_origin =  past_y_origin+past_len-lenRectangle;
@@ -100,6 +134,7 @@ public class MainActivity extends ActionBarActivity {
                                 past_y_origin+past_len, paint);
                     }
                     else if(nextDirection.equals("up")) {
+                        paint.setARGB(255, 255, rnd.nextInt(256), rnd.nextInt(256));
                         nextDirection = "right";
                         x_origin = past_x_origin;
                         y_origin =  past_y_origin-(lenRectangle);
@@ -142,6 +177,29 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            AlertDialog.Builder adb = new AlertDialog.Builder(this);
+
+
+            adb.setTitle("Visit moma");
+
+
+            adb.setIcon(android.R.drawable.ic_dialog_alert);
+
+
+            adb.setPositiveButton("Visit MOMA", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    String url = "http://www.moma.org";
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                } });
+
+
+            adb.setNegativeButton("Not now", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    return;
+                } });
+            adb.show();
             return true;
         }
         if (id == R.id.add){
@@ -151,7 +209,7 @@ public class MainActivity extends ActionBarActivity {
             canvas.invalidate();
         }
         if (id == R.id.remove){
-            if (num_rectangles > 3) {
+            if (num_rectangles > 5) {
                 num_rectangles = num_rectangles - 1;
             }
             canvas.invalidate();
