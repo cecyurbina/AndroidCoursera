@@ -11,21 +11,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
 
 public class MainActivity extends ActionBarActivity {
     private CanvasView canvas;
-    int[] all_fibonacci = {89,55,34,21,13, 8, 5, 3, 2, 1, 1};
-    int[] sub_fibonacci;
+    int[] all_fibonacci = {377,233,144,89,55,34,21,13, 8, 5, 3, 2, 1, 1};
+    ArrayList<Integer> fibonacci_list =  new ArrayList<Integer>();
+    ArrayList<Integer> sub_fibonacci = new ArrayList<Integer>();
+    int num_rectangles = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        LinearLayout canvasLayout = (LinearLayout)findViewById(R.id.canvas);
+       RelativeLayout canvasLayout = (RelativeLayout)findViewById(R.id.canvas);
         canvas = new CanvasView(this);
         canvasLayout.addView(canvas);
 
@@ -44,12 +48,12 @@ public class MainActivity extends ActionBarActivity {
         protected void onDraw(Canvas canvas) {
             mCanvas = canvas;
             heightMax = canvas.getHeight();
-            sub_fibonacci = Arrays.copyOfRange(all_fibonacci, 0, 6);
+            get_sublist(num_rectangles);
             calculatePoints();
         }
 
         protected void calculatePoints(){
-            lenSquare = heightMax/all_fibonacci[0];
+            lenSquare = (int) Math.ceil(heightMax/sub_fibonacci.get(0));
             Paint paint =new Paint();
             paint.setStyle(Paint.Style.FILL);
             String nextDirection = null;
@@ -59,12 +63,12 @@ public class MainActivity extends ActionBarActivity {
             int x_origin = 0;
             int y_origin = 0;
             int lenRectangle;
-            for (int item : all_fibonacci) {
+            for (int item : sub_fibonacci) {
                 Random rnd = new Random();
                 paint.setARGB(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
                 System.out.println("Count is: " + item);
                 lenRectangle = lenSquare * item;
-                if (all_fibonacci[0] == item){
+                if (sub_fibonacci.get(0) == item){
                     x_origin = 0;
                     y_origin = 0;
                     mCanvas.drawRect(x_origin, y_origin, lenRectangle, lenRectangle, paint);
@@ -111,6 +115,14 @@ public class MainActivity extends ActionBarActivity {
 
         }
 
+        public ArrayList<Integer> get_sublist(int limit){
+            for (int item : all_fibonacci) {
+                fibonacci_list.add(item);
+            }
+            sub_fibonacci = new ArrayList<Integer>(fibonacci_list.subList(all_fibonacci.length-limit, all_fibonacci.length));
+            return sub_fibonacci;
+        }
+
     }
 
 
@@ -131,6 +143,18 @@ public class MainActivity extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        if (id == R.id.add){
+            if (num_rectangles < 14) {
+                num_rectangles = num_rectangles + 1;
+            }
+            canvas.invalidate();
+        }
+        if (id == R.id.remove){
+            if (num_rectangles > 3) {
+                num_rectangles = num_rectangles - 1;
+            }
+            canvas.invalidate();
         }
 
         return super.onOptionsItemSelected(item);
