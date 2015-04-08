@@ -60,7 +60,7 @@ public class DownloadUtils {
      */
     public static Uri downloadImage(Context context,
                                     Uri url) {
-    	try {
+        try {
             if (!isExternalStorageWritable()) {
                 Log.d(TAG,
                       "external storage is not writable");
@@ -84,8 +84,7 @@ public class DownloadUtils {
             } else {
                 // Download the contents at the URL, which should
                 // reference an image.
-                inputStream =
-                    (InputStream) new URL(url.toString()).getContent();
+                inputStream = new URL(url.toString()).openStream();
                 filename = url.toString();
             }
 

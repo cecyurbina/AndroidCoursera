@@ -28,8 +28,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.WEB_SEARCH" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:scheme="http" />
                 <data android:scheme="https" />
             </intent-filter>
