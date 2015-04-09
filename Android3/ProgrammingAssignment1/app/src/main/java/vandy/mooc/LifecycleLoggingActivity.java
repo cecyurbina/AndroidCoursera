@@ -57,6 +57,8 @@ public abstract class LifecycleLoggingActivity extends Activity {
         // Always call super class for necessary
         // initialization/implementation.
         // TODO - you fill in here.
+        Log.d(TAG,
+                "onStart() - the activity is about to become visible");
         super.onStart();
     }
 	
@@ -75,6 +77,8 @@ public abstract class LifecycleLoggingActivity extends Activity {
         // initialization/implementation and then log which lifecycle
         // hook method is being called.
         // TODO - you fill in here.
+        Log.d(TAG,
+                "onResume() - the activity has become visible (it is now \"resumed\")");
         super.onResume();
     }
 	
@@ -92,6 +96,8 @@ public abstract class LifecycleLoggingActivity extends Activity {
         // initialization/implementation and then log which lifecycle
         // hook method is being called.
         // TODO - you fill in here.
+        Log.d(TAG,
+                "onPause() - another activity is taking focus (this activity is about to be \"paused\")");
         super.onPause();
     }
 	
@@ -106,6 +112,8 @@ public abstract class LifecycleLoggingActivity extends Activity {
         // initialization/implementation and then log which lifecycle
         // hook method is being called.
         // TODO - you fill in here.
+        Log.d(TAG,
+                "onStop() - the activity is no longer visible (it is now \"stopped\")");
         super.onStop();
     }
 	
@@ -119,6 +127,8 @@ public abstract class LifecycleLoggingActivity extends Activity {
         // initialization/implementation and then log which lifecycle
         // hook method is being called.
         // TODO - you fill in here.
+        Log.d(TAG,
+                "onRestart() - the activity is about to be restarted()");
         super.onRestart();
     }
 	
@@ -133,6 +143,8 @@ public abstract class LifecycleLoggingActivity extends Activity {
         // initialization/implementation and then log which lifecycle
         // hook method is being called.
         // TODO - you fill in here.
+        Log.d(TAG,
+                "onDestroy() - the activity is about to be destroyed");
         super.onDestroy();
     }
 }
