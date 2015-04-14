@@ -1,5 +1,6 @@
 package vandy.mooc;
 
+import java.lang.ref.WeakReference;
 import java.util.concurrent.CyclicBarrier;
 
 import android.os.Handler;
@@ -37,6 +38,52 @@ public class PlayPingPong implements Runnable {
      * HandlerThreads.
      */
     // @@ TODO - you fill in here.
+
+    static class PingHandler extends Handler {
+        WeakReference<MainActivity> mParent;
+
+        public PingHandler(WeakReference<MainActivity> parent){
+            mParent = parent;
+        }
+
+        @Override
+        public void handleMessage(Message msg){
+            MainActivity parent = mParent.get();
+            if (parent != null){
+
+                /*switch (msg.what){
+                    case DOWNLOAD_IMAGE: {
+                        parent.finish();
+                        break;
+                    }
+                }*/
+            }
+        }
+
+    }
+
+    static class PongHandler extends Handler {
+        WeakReference<MainActivity> mParent;
+
+        public PongHandler(WeakReference<MainActivity> parent){
+            mParent = parent;
+        }
+
+        @Override
+        public void handleMessage(Message msg){
+            MainActivity parent = mParent.get();
+            if (parent != null){
+
+                /*switch (msg.what){
+                    case DOWNLOAD_IMAGE: {
+                        parent.finish();
+                        break;
+                    }
+                }*/
+            }
+        }
+
+    }
 
     /**
      * Define a CyclicBarrier synchronizer that ensures the
