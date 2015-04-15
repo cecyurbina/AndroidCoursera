@@ -142,12 +142,13 @@ public class PlayPingPong implements Runnable {
             // with all its iterations yet.
             // @@ TODO - you fill in here, replacing "true" with the
             // appropriate code.
+            int printNumber = mIterationsCompleted + 1;
 
             if (mIterationsCompleted < mMaxIterations) {
                 if (mMyType.equals(PingPong.PING)) {
-                    mOutputStrategy.print("ping");
+                    mOutputStrategy.print("\nPing (" + printNumber +")");
                 } else {
-                    mOutputStrategy.print("pong");
+                    mOutputStrategy.print("\nPong ("+ printNumber +")");
                 }
                 mIterationsCompleted++;
             } else {
@@ -216,6 +217,6 @@ public class PlayPingPong implements Runnable {
 
 
         // Let the user know we're done.
-        mOutputStrategy.print("Done!");
+        mOutputStrategy.print("\nDone!");
     }
 }
