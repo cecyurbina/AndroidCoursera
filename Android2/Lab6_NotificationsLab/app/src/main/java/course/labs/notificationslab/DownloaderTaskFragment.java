@@ -157,15 +157,15 @@ public class DownloaderTaskFragment extends Fragment {
 					}
 				}
 
-				//downLoadCompleted = true;
-				//saveTweetsToFile(feeds);
+				downLoadCompleted = true;
+				saveTweetsToFile(feeds);
 
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
 			// Notify user that downloading has finished
-			//notify(downLoadCompleted);
+			notify(downLoadCompleted);
 
 			return feeds;
 
@@ -176,7 +176,7 @@ public class DownloaderTaskFragment extends Fragment {
 		// complete. Sends an ordered broadcast back to the BroadcastReceiver in
 		// MainActivity to determine whether the notification is necessary.
 
-	/*
+
 		private void notify(final boolean success) {
 
 			final Intent restartMainActivityIntent = new Intent(mContext,
@@ -209,18 +209,14 @@ public class DownloaderTaskFragment extends Fragment {
 							// TODO: Check whether or not the MainActivity
 							// received the broadcast
 
-							if (true || false) {
+							if (getResultCode() != MainActivity.IS_ALIVE) {
 
 								// TODO: If not, create a PendingIntent using
 								// the
 								// restartMainActivityIntent and set its flags
 								// to FLAG_UPDATE_CURRENT
-
-
-
-
-
-
+                                PendingIntent pendingIntent =
+                                        PendingIntent.getActivity(getActivity(),1, restartMainActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 
 								// Uses R.layout.custom_notification for the
@@ -234,25 +230,33 @@ public class DownloaderTaskFragment extends Fragment {
 								// TODO: Set the notification View's text to
 								// reflect whether the download completed
 								// successfully
+                                if (success) {
+                                    mContentView.setTextViewText(R.id.text, successMsg);
+                                }
+                                else {
+                                    mContentView.setTextViewText(R.id.text, failMsg);
+                                }
 
 
 
 
-								// TODO: Use the Notification.Builder class to
+                                // TODO: Use the Notification.Builder class to
 								// create the Notification. You will have to set
 								// several pieces of information. You can use
 								// android.R.drawable.stat_sys_warning
 								// for the small icon. You should also
 								// setAutoCancel(true).
 
-								Notification.Builder notificationBuilder = null;
+                                Notification notification = new Notification.Builder(getActivity())
+                                        .setContentTitle("Download finished.")
+                                        .setSmallIcon(android.R.drawable.stat_sys_warning)
+                                        .setAutoCancel(true)
+                                        .setContentIntent(pendingIntent)
+                                        .build();
 
 								// TODO: Send the notification
-
-
-
-
-
+                                NotificationManager mManagerNotification = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                                mManagerNotification.notify(MY_NOTIFICATION_ID, notification);
 
 								Toast.makeText(mContext, notificationSentMsg,
 										Toast.LENGTH_LONG).show();
@@ -266,12 +270,12 @@ public class DownloaderTaskFragment extends Fragment {
 					}, null, 0, null, null);
 		}
 
-*/
+
 	
 		// Uncomment this helper method
 		// Saves the tweets to a file
 	
-/*	
+
 		private void saveTweetsToFile(String[] result) {
 			PrintWriter writer = null;
 			try {
@@ -291,7 +295,7 @@ public class DownloaderTaskFragment extends Fragment {
 				}
 			}
 		}
-*/
+
 
 
 	

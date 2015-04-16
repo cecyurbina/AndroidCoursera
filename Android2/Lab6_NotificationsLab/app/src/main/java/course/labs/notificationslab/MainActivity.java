@@ -85,7 +85,9 @@ public class MainActivity extends Activity implements SelectionListener,
 
 			// TODO: Show a Toast message displaying
 			// R.string.download_in_progress string
-
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    R.string.download_in_progress_string, Toast.LENGTH_SHORT);
+            toast.show();
 
 			
 			
@@ -99,6 +101,10 @@ public class MainActivity extends Activity implements SelectionListener,
 					// Check to make sure this is an ordered broadcast
 					// Let sender know that the Intent was received
 					// by setting result code to MainActivity.IS_ALIVE
+
+                    if (isOrderedBroadcast()){
+                        setResultCode(IS_ALIVE);
+                    }
 
 
 					
@@ -153,11 +159,15 @@ public class MainActivity extends Activity implements SelectionListener,
 		// TODO:
 		// Register the BroadcastReceiver to receive a
 		// DATA_REFRESHED_ACTION broadcast
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("DATA_REFRESHED_ACTION");
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        registerReceiver(mRefreshReceiver, filter);
+    }
+		
+		
+		
 
-		
-		
-		
-	}
 
 	@Override
 	protected void onPause() {
@@ -166,6 +176,11 @@ public class MainActivity extends Activity implements SelectionListener,
 		// Unregister the BroadcastReceiver if it has been registered
 		// Note: check that mRefreshReceiver is not null before attempting to
 		// unregister in order to work around an Instrumentation issue
+        if (mRefreshReceiver != null) {
+
+           unregisterReceiver(mRefreshReceiver);
+
+        }
 
 
 		
