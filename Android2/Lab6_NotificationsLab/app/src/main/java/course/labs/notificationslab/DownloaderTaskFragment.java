@@ -41,19 +41,22 @@ public class DownloaderTaskFragment extends Fragment {
 		setRetainInstance(true);
 
 		// TODO: Create new DownloaderTask that "downloads" data
+        DownloaderTask asyncTask = new DownloaderTask();
 
-		
-		// TODO: Retrieve arguments from DownloaderTaskFragment
+
+
+        // TODO: Retrieve arguments from DownloaderTaskFragment
 		// Prepare them for use with DownloaderTask.
+        Bundle bundle=this.getArguments();
+
+        ArrayList<Integer> resourceIDS = bundle.getIntegerArrayList("friends");
+
+        // TODO: Start the DownloaderTask
+        asyncTask.execute(resourceIDS);
 
 
-		
-		
-		
-		// TODO: Start the DownloaderTask
 
-		
-	}
+    }
 
 	// Assign current hosting Activity to mCallback
 	// Store application context for use by downloadTweets()
@@ -85,8 +88,28 @@ public class DownloaderTaskFragment extends Fragment {
 	// out). Ultimately, it must also pass newly available data back to
 	// the hosting Activity using the DownloadFinishedListener interface.
 
-	// public class DownloaderTask extends ...
+    public class DownloaderTask extends AsyncTask<ArrayList<Integer>, Void, String[]> {
+        public DownloaderTask(){
 
+        }
+
+
+        @Override
+        protected String[] doInBackground(ArrayList<Integer>... arrayLists) {
+            ArrayList<Integer> data = arrayLists[0];
+            Integer[] dataArray = new Integer[data.size()];
+            for (int i = 0; i < data.size(); i++) {
+                dataArray[i] = data.get(i);
+            }
+            return downloadTweets(dataArray);
+        }
+
+        @Override
+        protected void onPostExecute(String[] strings) {
+            mCallback.notifyDataRefreshed(strings);
+
+        }
+    }
 
 	
 	
@@ -97,8 +120,8 @@ public class DownloaderTaskFragment extends Fragment {
 		// TODO: Uncomment this helper method
 		// Simulates downloading Twitter data from the network
 
-/* 
-	 
+
+
 	  private String[] downloadTweets(Integer resourceIDS[]) {
 	 
 			final int simulatedDelay = 2000;
@@ -134,20 +157,20 @@ public class DownloaderTaskFragment extends Fragment {
 					}
 				}
 
-				downLoadCompleted = true;
-				saveTweetsToFile(feeds);
+				//downLoadCompleted = true;
+				//saveTweetsToFile(feeds);
 
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
 			// Notify user that downloading has finished
-			notify(downLoadCompleted);
+			//notify(downLoadCompleted);
 
 			return feeds;
 
 		}
-*/
+
 		// Uncomment this helper method.
 		// If necessary, notifies the user that the tweet downloads are
 		// complete. Sends an ordered broadcast back to the BroadcastReceiver in

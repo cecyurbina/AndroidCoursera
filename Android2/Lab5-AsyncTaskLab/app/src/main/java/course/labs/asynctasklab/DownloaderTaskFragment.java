@@ -144,13 +144,4 @@ public class DownloaderTaskFragment extends Fragment {
 			return feeds;
 		}
 
-
-
-
-    
-    
-    
-    
-    
-
 }
