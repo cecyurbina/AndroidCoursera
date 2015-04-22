@@ -1,5 +1,7 @@
 package com.example.root.myapplication;
 
+import android.app.Activity;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,15 +19,28 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity implements TaskFragment.TaskCallbacks {
     private EditText urlLink;
     private String stringURL;
+    private static final String TAG_TASK_FRAGMENT = "task_fragment";
+
+    private TaskFragment mTaskFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         urlLink = (EditText) findViewById(R.id.url);
+
+        FragmentManager fm = getFragmentManager();
+        mTaskFragment = (TaskFragment) fm.findFragmentByTag(TAG_TASK_FRAGMENT);
+
+        // If the Fragment is non-null, then it is currently being
+        // retained across a configuration change.
+        if (mTaskFragment == null) {
+            mTaskFragment = new TaskFragment();
+            fm.beginTransaction().add(mTaskFragment, TAG_TASK_FRAGMENT).commit();
+        }
 
 
     }
@@ -67,7 +82,7 @@ public class MainActivity extends ActionBarActivity {
                 toast.show();
             }
             else {
-                new DownloadImageAsync().execute();
+                mTaskFragment.executeAsync();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,86 +103,37 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    private class DownloadImageAsync extends AsyncTask<String, Void, String> {
-        ProgressDialog progressDialog;
-        Uri imageSavedURI;
-        Uri imageGreyURI;
-
-        @Override
-        protected String doInBackground(String... params) {
-            imageSavedURI = Utils.downloadImage(getApplicationContext(), getURL());
-            return "Executed";
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            progressDialog.dismiss();
-            if (imageSavedURI == null) {
-                Toast toast = Toast.makeText(getApplicationContext(), "error al descargar imagen", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-            else {
-                new ConvertGreyImageAsync().execute(imageSavedURI);
-            }
-
-        }
-
-        @Override
-        protected void onPreExecute() {
-            progressDialog = new ProgressDialog(MainActivity.this);
-            progressDialog.setMessage("wait to save image");
-            progressDialog.show();
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {}
-    }
-
-
-    private class ConvertGreyImageAsync extends AsyncTask<Uri, Void, Uri> {
-        Uri imageGreyURI;
-        ProgressDialog progressDialog = null;
-
-        @Override
-        protected void onPostExecute(Uri result) {
-            if (progressDialog.isShowing() && progressDialog != null) {
-                progressDialog.dismiss();
-            }
-            MainActivity.this.openImage(imageGreyURI);
-
-        }
-
-        @Override
-        protected Uri doInBackground(Uri... params) {
-            imageGreyURI = Utils.grayScaleFilter(getApplicationContext(), params[0]);
-            return imageGreyURI;
-        }
-
-        @Override
-        protected void onPreExecute() {
-             if (progressDialog == null) {
-                 progressDialog = new ProgressDialog(MainActivity.this);
-                 progressDialog.setMessage("converting to grey scale");
-             }
-                progressDialog.show();
-
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {}
-    }
 
 
 
-    private Uri getURL(){
+   public Uri getURL(){
         return Uri.parse(stringURL);
     }
 
-    private void openImage(Uri imageGreyUri){
+    public void openImage(Uri imageGreyUri){
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.parse("file://"+imageGreyUri), "image/*");
         startActivity(intent);
     }
 
+    @Override
+    public void onPreExecute() {
+
+    }
+
+    @Override
+    public void onProgressUpdate(int percent) {
+
+    }
+
+    @Override
+    public void onCancelled() {
+
+    }
+
+    @Override
+    public void onPostExecute() {
+
+    }
 }
