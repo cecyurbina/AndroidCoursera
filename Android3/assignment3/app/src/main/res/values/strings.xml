@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">My Application</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="default_url">"http://goo.gl/kVLOid"</string>
+    <string name="download_image">Download image</string>
+    <string name="url_image">URL</string>
+    <string name="url_invalid">URL is not valid</string>
+
+
+</resources>
