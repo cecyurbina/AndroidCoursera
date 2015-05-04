@@ -26,7 +26,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         // For our recurring task, we'll just display a message
         in=new Intent(context,MainActivity.class);
-        in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //in.addFlags(Integer.parseInt(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
         pendingIntent=PendingIntent.getActivity(context, 0, in, 0);
 
         mBuilder=new NotificationCompat.Builder(context)
@@ -36,10 +36,12 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .build();
+        mBuilder.flags|= Notification.FLAG_AUTO_CANCEL;
+        mBuilder.flags = Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
 
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        mNotificationManager.notify(1, mBuilder);
         mNotificationManager.notify(MY_NOTIFICATION_ID, mBuilder);
+
     }
 }

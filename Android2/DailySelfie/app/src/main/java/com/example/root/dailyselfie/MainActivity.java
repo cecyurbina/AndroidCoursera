@@ -69,7 +69,7 @@ public class MainActivity extends ActionBarActivity {
         Intent intentAlarm = new Intent(this, AlarmReceiver.class);
 
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmIntent=PendingIntent.getBroadcast(this, 1, intentAlarm, 0);
+        alarmIntent=PendingIntent.getBroadcast(this, 1, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
 
         alarmManager.set(AlarmManager.RTC_WAKEUP,time, alarmIntent);
 
