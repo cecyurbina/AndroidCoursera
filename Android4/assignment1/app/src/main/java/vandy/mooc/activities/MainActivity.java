@@ -137,9 +137,6 @@ public class MainActivity extends LifecycleLoggingActivity
     public void onServiceResult(int requestCode,
                                 int resultCode,
                                 Bundle data) {
-        Log.d("@@@@@@@@@@@@@@@@@@@@@", String.valueOf(requestCode));
-        Log.d("@@@@@@@@@@@@@@@@@@@@@", String.valueOf(resultCode));
-
         // Handle the results.
         mImageOps.doResult(requestCode,
                            resultCode,

@@ -68,7 +68,7 @@ public class DownloadImageService extends IntentService {
                                     String directoryPathname,
                                     Handler downloadHandler) {
         // Create an intent that will download the image from the web.
-    	// TOD -- you fill in here, replacing "null" with the proper
+    	// TODO -- you fill in here, replacing "null" with the proper
     	// code, which involves (1) setting the URL as "data" to the
     	// intent, (2) putting the request code as an "extra" to the
     	// intent, (3) creating and putting a Messenger as an "extra"
@@ -132,28 +132,31 @@ public class DownloadImageService extends IntentService {
     @Override
     public void onHandleIntent(Intent intent) {
         // Get the URL associated with the Intent data.
-        // @@ TOD -- you fill in here.
-          Uri data = intent.getData();
+        // @@ TODO -- you fill in here.
+
+
+
+        Uri data = intent.getData();
 
 
         // Get the directory pathname where the image will be stored.
-        // @@ TOD -- you fill in here.
+        // @@ TODO -- you fill in here.
         String directoryPathname = intent.getStringExtra(DIRECTORY_PATHNAME);
 
 
         // Download the requested image.
-        // @@ TOD -- you fill in here.
+        // @@ TODO -- you fill in here.
         Uri path = Utils.downloadImage(getApplicationContext(), data, directoryPathname);
 
         // Extract the Messenger stored as an extra in the
         // intent under the key MESSENGER.
-        // @@ TOD -- you fill in here.
+        // @@ TODO -- you fill in here.
         Messenger messenger = (Messenger)intent.getParcelableExtra(MESSENGER);
         messenger = (Messenger) intent.getExtras().get(MESSENGER);
 
         // Send the path to the image file back to the
         // MainActivity via the messenger.
-        // @@ TOD -- you fill in here.
+        // @@ TODO -- you fill in here.
         sendPath(messenger, path, data);
 
 
@@ -204,6 +207,16 @@ public class DownloadImageService extends IntentService {
         // Return the result to indicate whether the download
         // succeeded or failed.
         // @@ TODO -- you fill in here.
+        if (pathToImageFile != null){
+            //&& pathToImageFile.toString().endsWith("jpg") || pathToImageFile.toString().endsWith("jpeg")
+
+            message.arg1 = Activity.RESULT_OK ;
+
+        } else {
+
+            message.arg1 = Activity.RESULT_CANCELED ;
+
+        }
 
         // Put the path to the image file into the Bundle via the
         // IMAGE_PATHNAME key only if the download succeeded.
