@@ -116,7 +116,6 @@ public class ImageOpsBoundService extends ImageOpsImpl {
             // Unbind from the Service.
             // TOD -- you fill in here.
             mActivity.get().unbindService(mServiceConnection);
-
             // Set this field to null to trigger a call to
             // bindService() next time bindService() is called.
             // TOD -- you fill in here.
