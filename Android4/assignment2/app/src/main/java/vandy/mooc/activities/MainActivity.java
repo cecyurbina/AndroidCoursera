@@ -80,7 +80,14 @@ public class MainActivity extends LifecycleLoggingActivity
     protected void onStop() {
         // Unbind from the Service (which may be a no-op, depending on
         // which type of DownloadImages*Service is used).
-        mImageOps.unbindService();
+
+        // Unbind from the Service.
+        try {
+            mImageOps.unbindService();
+        } catch (Exception e) {
+// Log stuff
+        }
+
 
         // Always call super class for necessary operations when
         // stopping.

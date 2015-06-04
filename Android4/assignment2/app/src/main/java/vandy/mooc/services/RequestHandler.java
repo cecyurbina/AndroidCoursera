@@ -61,22 +61,22 @@ class RequestHandler extends Handler {
             RequestMessage.makeRequestMessage(message);
 
         // Get the reply Messenger.
-        // TOD -- you fill in here.
+        // TODO-- you fill in here.
         final Messenger replyMessenger = message.replyTo;
 
 
         // Get the URL associated with the message data.
-        // TOD -- you fill in here.
+        // TODO-- you fill in here.
         final Uri url = requestMessage.getImageURL();
 
 
         // Get the directory pathname where the image will be stored.
-        // TOD -- you fill in here.
+        // TODO-- you fill in here.
         final String directoryPath = requestMessage.getDirectoryPathname();
 
         // Get the requestCode for the operation that was invoked by
         // the Activity.
-        // TOD -- you fill in here.
+        // TODO-- you fill in here.
         final int requestCode = requestMessage.getRequestCode();
 
         // A Runnable that downloads the image, stores it in a file,
@@ -89,13 +89,13 @@ class RequestHandler extends Handler {
                 @Override
                 public void run() {
                     // Download and store the requested image.
-                    // TOD -- you fill in here.
+                    // TODO-- you fill in here.
                     Uri mStoredPathUri = Utils.downloadImage(mService.get(), url, directoryPath);
 
                     // Send the path to the image file, url, and
                     // requestCode back to the Activity via the
                     // replyMessenger.
-                    // TOD -- you fill in here.
+                    // TODO-- you fill in here.
                     sendPath(replyMessenger, mStoredPathUri, url, requestCode);
 
                 }
@@ -103,8 +103,8 @@ class RequestHandler extends Handler {
 
         // Execute the downloadImageAndReply Runnable to download the
         // image and reply.
-        // TOD -- you fill in here.
-        downloadImageAndReply.run();
+        // TODO-- you fill in here.
+        mExecutorService.execute(downloadImageAndReply);
     }
 
     /**
@@ -117,7 +117,7 @@ class RequestHandler extends Handler {
                          int requestCode) {
         // Call the makeReplyMessage() factory method to create
         // Message.
-        // TOD -- you fill in here.
+        // TODO-- you fill in here.
         ReplyMessage m = ReplyMessage.makeReplyMessage(pathToImageFile, url, requestCode);
 
 
@@ -142,7 +142,7 @@ class RequestHandler extends Handler {
      */
     public void shutdown() {
         // Immediately shutdown the ExecutorService.
-        // TOD -- you fill in here.
+        // TODO-- you fill in here.
         mExecutorService.shutdown();
     }
 }
