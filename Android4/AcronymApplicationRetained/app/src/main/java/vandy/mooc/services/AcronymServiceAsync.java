@@ -2,9 +2,11 @@ package vandy.mooc.services;
 
 import java.util.List;
 
-import vandy.mooc.aidl.AcronymData;
-import vandy.mooc.aidl.AcronymRequest;
-import vandy.mooc.aidl.AcronymResults;
+
+import vandy.mooc.aidl.WeatherData;
+import vandy.mooc.aidl.WeatherRequest;
+import vandy.mooc.aidl.WeatherResults;
+import vandy.mooc.jsonweather.Weather;
 import vandy.mooc.utils.Utils;
 import android.content.Context;
 import android.content.Intent;
@@ -66,39 +68,30 @@ public class AcronymServiceAsync extends LifecycleLoggingService {
      * This implementation plays the role of Invoker in the Broker
      * Pattern.
      */
-    private final AcronymRequest.Stub mAcronymRequestImpl =
-        new AcronymRequest.Stub() {
-            /**
-             * Implement the AIDL AcronymRequest expandAcronym()
-             * method, which forwards to DownloadUtils getResults() to
-             * obtain the results from the Acronym Web service and
-             * then sends the results back to the Activity via a
-             * callback.
-             */
+    private final WeatherRequest.Stub mAcronymRequestImpl =
+        new WeatherRequest.Stub() {
             @Override
-            public void expandAcronym(String acronym,
-                                      AcronymResults callback)
-                throws RemoteException {
-
-                // Call the Acronym Web service to get the list of
-                // possible expansions of the designated acronym.
-                final List<AcronymData> acronymResults = 
-                    Utils.getResults(acronym);
+            public void getCurrentWeather(String weather, WeatherResults results)
+                    throws RemoteException {
+                final List<WeatherData> acronymResults =
+                        Utils.getResults(weather);
 
                 if (acronymResults != null) {
-                    Log.d(TAG, "" 
-                          + acronymResults.size() 
-                          + " results for acronym: " 
-                          + acronym);
+                    Log.d(TAG, ""
+                            + acronymResults.size()
+                            + " results for acronym: "
+                            + weather);
                     // Invoke a one-way callback to send list of
                     // acronym expansions back to the AcronymActivity.
-                    callback.sendResults(acronymResults);
-                } else
+                    results.sendResults(acronymResults);
+                } //else
                     // Invoke a one-way callback to send an error
                     // message back to the AcronymActivity.
-                    callback.sendError("No expansions for " 
-                                       + acronym
-                                       + " found");
+                    //results.sendError("No expansions for "
+                     //       + acronym
+                     //       + " found");
+
             }
+
 	};
 }

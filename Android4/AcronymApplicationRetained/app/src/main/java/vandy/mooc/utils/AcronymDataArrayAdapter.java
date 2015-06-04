@@ -2,9 +2,10 @@ package vandy.mooc.utils;
 
 import java.util.List;
 
-import vandy.mooc.aidl.AcronymData;
 
 import vandy.mooc.R;
+import vandy.mooc.aidl.WeatherData;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,7 @@ import android.widget.TextView;
  * of the ListView have a more complex layout than just a single
  * textview (which is the default for ListViews).
  */
-public class AcronymDataArrayAdapter extends ArrayAdapter<AcronymData> {
+public class AcronymDataArrayAdapter extends ArrayAdapter<WeatherData> {
     /**
      * Construtor that declares which layout file is used as the
      * layout for each row.
@@ -31,7 +32,7 @@ public class AcronymDataArrayAdapter extends ArrayAdapter<AcronymData> {
      * layout for each row.
      */
     public AcronymDataArrayAdapter(Context context,
-                                   List<AcronymData> objects) {
+                                   List<WeatherData> objects) {
         super(context, R.layout.acronym_data_row, objects);
     }
 
@@ -56,7 +57,7 @@ public class AcronymDataArrayAdapter extends ArrayAdapter<AcronymData> {
     public View getView(int position,
                         View convertView,
                         ViewGroup parent) {
-        AcronymData data = getItem(position);
+        WeatherData data = getItem(position);
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.acronym_data_row,
                                                                     parent,
@@ -70,9 +71,9 @@ public class AcronymDataArrayAdapter extends ArrayAdapter<AcronymData> {
         TextView yearAddedTV =
             (TextView) convertView.findViewById(R.id.year_added_to_db);
 
-        resultTV.setText(data.mLongForm);
-        dbRefsTV.setText("" + data.mFreq);
-        yearAddedTV.setText("" + data.mSince);
+        resultTV.setText(data.mName);
+        dbRefsTV.setText("" + data.mSpeed);
+        yearAddedTV.setText("" + data.mTemp);
 
         return convertView;
     }

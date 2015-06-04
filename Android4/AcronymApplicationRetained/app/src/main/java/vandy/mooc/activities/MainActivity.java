@@ -3,7 +3,7 @@ package vandy.mooc.activities;
 import java.util.List;
 
 import vandy.mooc.R;
-import vandy.mooc.aidl.AcronymData;
+import vandy.mooc.aidl.WeatherData;
 import vandy.mooc.operations.AcronymOps;
 import vandy.mooc.operations.AcronymOpsImpl;
 import vandy.mooc.utils.AcronymDataArrayAdapter;
@@ -188,7 +188,7 @@ public class MainActivity extends LifecycleLoggingActivity {
         // Reset the display for the next acronym expansion.
         resetDisplay();
         
-        // Asynchronously expand the acronym. 
+        // Asynchronously expand the acronym.
         mAcronymOps.expandAcronymAsync(acronym);
     }
 
@@ -198,7 +198,7 @@ public class MainActivity extends LifecycleLoggingActivity {
      * @param results
      *            List of Results to be displayed.
      */
-    public void displayResults(List<AcronymData> results,
+    public void displayResults(List<WeatherData> results,
                                String errorMessage) {
         if (results == null || results.size() == 0)
             Utils.showToast(this,

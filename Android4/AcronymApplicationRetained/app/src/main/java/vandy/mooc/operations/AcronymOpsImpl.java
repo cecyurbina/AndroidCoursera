@@ -5,23 +5,20 @@ import java.util.List;
 
 import vandy.mooc.R;
 import vandy.mooc.activities.MainActivity;
-import vandy.mooc.aidl.AcronymCall;
-import vandy.mooc.aidl.AcronymData;
-import vandy.mooc.aidl.AcronymRequest;
-import vandy.mooc.aidl.AcronymResults;
+
+import vandy.mooc.aidl.WeatherCall;
+import vandy.mooc.aidl.WeatherData;
+import vandy.mooc.aidl.WeatherRequest;
+import vandy.mooc.aidl.WeatherResults;
 import vandy.mooc.services.AcronymServiceAsync;
 import vandy.mooc.services.AcronymServiceSync;
-import vandy.mooc.utils.AcronymDataArrayAdapter;
 import vandy.mooc.utils.GenericServiceConnection;
-import vandy.mooc.utils.Utils;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ListView;
+
 
 /**
  * This class implements all the acronym-related operations defined in
@@ -42,18 +39,18 @@ public class AcronymOpsImpl implements AcronymOps {
      * This GenericServiceConnection is used to receive results after
      * binding to the AcronymServiceSync Service using bindService().
      */
-    private GenericServiceConnection<AcronymCall> mServiceConnectionSync;
+    private GenericServiceConnection<WeatherCall> mServiceConnectionSync;
 
     /**
      * This GenericServiceConnection is used to receive results after
      * binding to the AcronymServiceAsync Service using bindService().
      */
-    private GenericServiceConnection<AcronymRequest> mServiceConnectionAsync;
+    private GenericServiceConnection<WeatherRequest> mServiceConnectionAsync;
 
     /**
      * List of results to display (if any).
      */
-    protected List<AcronymData> mResults;
+    protected List<WeatherData> mResults;
 
     /**
      * This Handler is used to post Runnables to the UI from the
@@ -72,14 +69,14 @@ public class AcronymOpsImpl implements AcronymOps {
      * Invoker in the Broker Pattern since it dispatches the upcall to
      * sendResults().
      */
-    private final AcronymResults.Stub mAcronymResults =
-        new AcronymResults.Stub() {
+    private final WeatherResults.Stub mAcronymResults =
+        new WeatherResults.Stub() {
             /**
              * This method is invoked by the AcronymServiceAsync to
              * return the results back to the AcronymActivity.
              */
             @Override
-            public void sendResults(final List<AcronymData> acronymDataList)
+            public void sendResults(final List<WeatherData> acronymDataList)
                 throws RemoteException {
                 // Since the Android Binder framework dispatches this
                 // method in a background Thread we need to explicitly
@@ -98,27 +95,7 @@ public class AcronymOpsImpl implements AcronymOps {
                     });
             }
 
-            /**
-             * This method is invoked by the AcronymServiceAsync to
-             * return error results back to the AcronymActivity.
-             */
-            @Override
-            public void sendError(final String reason)
-                throws RemoteException {
-                // Since the Android Binder framework dispatches this
-                // method in a background Thread we need to explicitly
-                // post a runnable containing the results to the UI
-                // Thread, where it's displayed.  We use the
-                // mDisplayHandler to avoid a dependency on the
-                // Activity, which may be destroyed in the UI Thread
-                // during a runtime configuration change.
-                mDisplayHandler.post(new Runnable() {
-                        public void run() {
-                            mActivity.get().displayResults(null,
-                                                           reason);
-                        }
-                    });
-            }
+
 	};
 
     /**
@@ -130,10 +107,10 @@ public class AcronymOpsImpl implements AcronymOps {
 
         // Initialize the GenericServiceConnection objects.
         mServiceConnectionSync = 
-            new GenericServiceConnection<AcronymCall>(AcronymCall.class);
+            new GenericServiceConnection<WeatherCall>(WeatherCall.class);
 
         mServiceConnectionAsync =
-            new GenericServiceConnection<AcronymRequest>(AcronymRequest.class);
+            new GenericServiceConnection<WeatherRequest>(WeatherRequest.class);
     }
 
     /**
@@ -213,7 +190,7 @@ public class AcronymOpsImpl implements AcronymOps {
      * the "Look Up Async" button.
      */
     public void expandAcronymAsync(String acronym) {
-        final AcronymRequest acronymRequest = 
+        final WeatherRequest acronymRequest =
             mServiceConnectionAsync.getInterface();
 
         if (acronymRequest != null) {
@@ -223,7 +200,7 @@ public class AcronymOpsImpl implements AcronymOps {
                 // sendResults() method of the mAcronymResults
                 // callback object, which runs in a Thread from the
                 // Thread pool managed by the Binder framework.
-                acronymRequest.expandAcronym(acronym,
+                acronymRequest.getCurrentWeather(acronym,
                                              mAcronymResults);
             } catch (RemoteException e) {
                 Log.e(TAG,
@@ -241,14 +218,14 @@ public class AcronymOpsImpl implements AcronymOps {
      * the "Look Up Sync" button.
      */
     public void expandAcronymSync(String acronym) {
-        final AcronymCall acronymCall = 
+        final WeatherCall acronymCall =
             mServiceConnectionSync.getInterface();
 
         if (acronymCall != null) {
             // Use an anonymous AsyncTask to download the Acronym data
             // in a separate thread and then display any results in
             // the UI thread.
-            new AsyncTask<String, Void, List<AcronymData>> () {
+            new AsyncTask<String, Void, List<WeatherData>> () {
                 /**
                  * Acronym we're trying to expand.
                  */
@@ -259,10 +236,10 @@ public class AcronymOpsImpl implements AcronymOps {
                  * synchronous two-way method call, which runs in a
                  * background thread to avoid blocking the UI thread.
                  */
-                protected List<AcronymData> doInBackground(String... acronyms) {
+                protected List<WeatherData> doInBackground(String... acronyms) {
                     try {
                         mAcronym = acronyms[0];
-                        return acronymCall.expandAcronym(mAcronym);
+                        return acronymCall.getCurrentWeather(mAcronym);
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }
@@ -272,7 +249,7 @@ public class AcronymOpsImpl implements AcronymOps {
                 /**
                  * Display the results in the UI Thread.
                  */
-                protected void onPostExecute(List<AcronymData> acronymDataList) {
+                protected void onPostExecute(List<WeatherData> acronymDataList) {
                     mResults = acronymDataList;
                     mActivity.get().displayResults(acronymDataList,
                                                    "no expansions for "

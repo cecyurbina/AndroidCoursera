@@ -3,8 +3,9 @@ package vandy.mooc.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import vandy.mooc.aidl.AcronymCall;
-import vandy.mooc.aidl.AcronymData;
+import vandy.mooc.aidl.WeatherCall;
+import vandy.mooc.aidl.WeatherData;
+import vandy.mooc.jsonweather.Weather;
 import vandy.mooc.utils.Utils;
 import android.content.Context;
 import android.content.Intent;
@@ -64,28 +65,19 @@ public class AcronymServiceSync extends LifecycleLoggingService {
      * This implementation plays the role of Invoker in the Broker
      * Pattern.
      */
-    private final AcronymCall.Stub mAcronymCallImpl =
-        new AcronymCall.Stub() {
-            /**
-             * Implement the AIDL AcronymCall expandAcronym() method,
-             * which forwards to DownloadUtils getResults() to obtain
-             * the results from the Acronym Web service and then
-             * returns the results back to the Activity.
-             */
+    private final WeatherCall.Stub mAcronymCallImpl =
+        new WeatherCall.Stub() {
             @Override
-            public List<AcronymData> expandAcronym(String acronym)
-                throws RemoteException {
-
-                // Call the Acronym Web service to get the list of
-                // possible expansions of the designated acronym.
-                final List<AcronymData> acronymResults = 
-                    Utils.getResults(acronym);
+            public List<WeatherData> getCurrentWeather(String weather)
+                    throws RemoteException {
+                final List<WeatherData> acronymResults =
+                        Utils.getResults(weather);
 
                 if (acronymResults != null) {
-                    Log.d(TAG, "" 
-                          + acronymResults.size() 
-                          + " results for acronym: " 
-                          + acronym);
+                    Log.d(TAG, ""
+                            + acronymResults.size()
+                            + " results for acronym: "
+                            + weather);
 
                     // Return the list of acronym expansions back to the
                     // AcronymActivity.
@@ -94,8 +86,9 @@ public class AcronymServiceSync extends LifecycleLoggingService {
                     // Create a zero-sized acronymResults object to
                     // indicate to the caller that the acronym had no
                     // expansions.
-                    return new ArrayList<AcronymData>();
+                    return new ArrayList<WeatherData>();
                 }
             }
+
 	};
 }

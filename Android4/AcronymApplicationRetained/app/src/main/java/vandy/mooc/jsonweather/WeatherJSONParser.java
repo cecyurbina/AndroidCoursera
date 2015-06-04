@@ -9,6 +9,8 @@ import java.util.List;
 import android.util.JsonReader;
 import android.util.JsonToken;
 
+import org.json.JSONObject;
+
 /**
  * Parses the Json weather data returned from the Weather Services API
  * and returns a List of JsonWeather objects that contain this data.
@@ -26,6 +28,7 @@ public class WeatherJSONParser {
      */
     public List<JsonWeather> parseJsonStream(InputStream inputStream)
         throws IOException {
+
         // TODO -- you fill in here.
         // Create a JsonReader for the inputStream.
         try (JsonReader reader =
@@ -56,7 +59,6 @@ public class WeatherJSONParser {
      */
     public JsonWeather parseJsonWeather(JsonReader reader) 
         throws IOException {
-
         reader.beginObject();
         JsonWeather weather = new JsonWeather();
         try {
@@ -67,7 +69,7 @@ public class WeatherJSONParser {
                         weather.setCod(reader.nextLong());
                         break;
                     case JsonWeather.name_JSON:
-                        weather.setCod(reader.nextInt());
+                        weather.setName(reader.nextString());
                         break;
                     case JsonWeather.id_JSON:
                         weather.setId(reader.nextLong());
@@ -76,19 +78,19 @@ public class WeatherJSONParser {
                         weather.setDt(reader.nextLong());
                         break;
                     case JsonWeather.wind_JSON:
-                        parseWind(reader);
+                        weather.setWind(parseWind(reader));
                         break;
                     case JsonWeather.main_JSON:
-                        parseMain(reader);
+                        weather.setMain(parseMain(reader));
                         break;
                     case JsonWeather.base_JSON:
                         weather.setBase(reader.nextString());
                         break;
                     case JsonWeather.weather_JSON:
-                        parseWeathers(reader);
+                        weather.setWeather(parseWeathers(reader));
                         break;
                     case JsonWeather.sys_JSON:
-                        parseSys(reader);
+                        weather.setSys(parseSys(reader));
                         break;
                     default:
                         reader.skipValue();
@@ -108,12 +110,14 @@ public class WeatherJSONParser {
     public List<Weather> parseWeathers(JsonReader reader) throws IOException {
         // TODO -- you fill in here.
         reader.beginArray();
+
         List<Weather> list = new ArrayList<>();
 
             while (reader.hasNext()) {
                 list.add(parseWeather(reader));
 
-            }
+             }
+        reader.endArray();
 
     return list;
     }
@@ -123,6 +127,8 @@ public class WeatherJSONParser {
      */
     public Weather parseWeather(JsonReader reader) throws IOException {
         // TODO -- you fill in here.
+        reader.beginObject();
+
         Weather weather = new Weather();
         try {
             while (reader.hasNext()) {

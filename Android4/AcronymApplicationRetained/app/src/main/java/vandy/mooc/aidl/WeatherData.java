@@ -37,13 +37,13 @@ public class WeatherData implements Parcelable {
      * These data members are the local variables that will store the
      * WeatherData's state
      */
-    private String mName;
-    private double mSpeed;
-    private double mDeg;
-    private double mTemp;
-    private long mHumidity;
-    private long mSunrise;
-    private long mSunset;
+    public String mName;
+    public double mSpeed;
+    public double mDeg;
+    public double mTemp;
+    public long mHumidity;
+    public long mSunrise;
+    public long mSunset;
 
     /**
      * Constructor

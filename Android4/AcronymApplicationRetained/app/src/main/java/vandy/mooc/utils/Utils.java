@@ -35,7 +35,7 @@ public class Utils {
      * URL to the Acronym web service.
      */
     private final static String sAcronym_Web_Service_URL =
-        "http://www.nactem.ac.uk/software/acromine/dictionary.py?sf=";
+        "http://api.openweathermap.org/data/2.5/weather?q=";
 
     /**
      * Obtain the Acronym information.
