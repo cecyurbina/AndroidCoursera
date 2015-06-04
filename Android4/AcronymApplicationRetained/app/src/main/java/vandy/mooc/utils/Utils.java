@@ -8,9 +8,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import vandy.mooc.aidl.AcronymData;
-import vandy.mooc.jsonacronym.AcronymJSONParser;
-import vandy.mooc.jsonacronym.JsonAcronym;
+import vandy.mooc.aidl.WeatherData;
+import vandy.mooc.jsonweather.JsonWeather;
+import vandy.mooc.jsonweather.Weather;
+import vandy.mooc.jsonweather.WeatherJSONParser;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.IBinder;
@@ -40,14 +42,14 @@ public class Utils {
      * 
      * @return The information that responds to your current acronym search.
      */
-    public static List<AcronymData> getResults(final String acronym) {
+    public static List<WeatherData> getResults(final String acronym) {
         // Create a List that will return the AcronymData obtained
         // from the Acronym Service web service.
-        final List<AcronymData> returnList = 
-            new ArrayList<AcronymData>();
+        final List<WeatherData> returnList =
+            new ArrayList<WeatherData>();
             
         // A List of JsonAcronym objects.
-        List<JsonAcronym> jsonAcronyms = null;
+        List<JsonWeather> jsonAcronyms = null;
 
         try {
             // Append the location to create the full URL.
@@ -63,8 +65,8 @@ public class Utils {
             try (InputStream in =
                  new BufferedInputStream(urlConnection.getInputStream())) {
                  // Create the parser.
-                 final AcronymJSONParser parser =
-                     new AcronymJSONParser();
+                 final WeatherJSONParser parser =
+                     new WeatherJSONParser();
 
                 // Parse the Json results and create JsonAcronym data
                 // objects.
@@ -80,10 +82,14 @@ public class Utils {
         if (jsonAcronyms != null && jsonAcronyms.size() > 0) {
             // Convert the JsonAcronym data objects to our AcronymData
             // object, which can be passed between processes.
-            for (JsonAcronym jsonAcronym : jsonAcronyms)
-                returnList.add(new AcronymData(jsonAcronym.getLongForm(),
-                                               jsonAcronym.getFreq(),
-                                               jsonAcronym.getSince()));
+            for (JsonWeather jsonAcronym : jsonAcronyms)
+                returnList.add(new WeatherData(jsonAcronym.getName(),
+                                               jsonAcronym.getWind().getSpeed(),
+                                               jsonAcronym.getWind().getDeg(),
+                        jsonAcronym.getMain().getTemp(),
+                        jsonAcronym.getMain().getHumidity(),
+                        jsonAcronym.getSys().getSunrise(),
+                        jsonAcronym.getSys().getSunset()));
              // Return the List of AcronymData.
              return returnList;
         }  else
