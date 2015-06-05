@@ -15,6 +15,8 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 
+import org.json.JSONException;
+
 /**
  * @class AcronymServiceAsync
  * 
@@ -73,8 +75,13 @@ public class AcronymServiceAsync extends LifecycleLoggingService {
             @Override
             public void getCurrentWeather(String weather, WeatherResults results)
                     throws RemoteException {
-                final List<WeatherData> acronymResults =
-                        Utils.getResults(weather);
+                List<WeatherData> acronymResults;
+                try {
+                    acronymResults = Utils.getResults(weather);
+                } catch (JSONException e) {
+                    acronymResults = null;
+                    e.printStackTrace();
+                }
 
                 if (acronymResults != null) {
                     Log.d(TAG, ""

@@ -19,6 +19,8 @@ import android.os.IBinder;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import org.json.JSONException;
+
 /**
  * @class AcronymDownloadUtils
  *
@@ -42,7 +44,7 @@ public class Utils {
      * 
      * @return The information that responds to your current acronym search.
      */
-    public static List<WeatherData> getResults(final String acronym) {
+    public static List<WeatherData> getResults(final String acronym) throws JSONException {
         // Create a List that will return the AcronymData obtained
         // from the Acronym Service web service.
         final List<WeatherData> returnList =

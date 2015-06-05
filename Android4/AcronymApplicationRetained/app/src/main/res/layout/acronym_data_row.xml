@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:text="@string/year_string" />
+        android:textColor="#ff83b1ff"
+        android:text="@string/temperature" />
 
     <TextView
         android:id="@+id/db_refs"
@@ -22,8 +23,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:paddingLeft="5dp"
+        android:textColor="#ffe88aff"
         android:layout_toRightOf="@+id/year_added_to_db"
-        android:text="@string/refernces_string" />
+        android:text="@string/windspeed" />
 
     <TextView
         android:id="@+id/name"
@@ -31,7 +33,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:paddingLeft="5dp"
+        android:textColor="#ff8bffbb"
         android:layout_toRightOf="@+id/db_refs"
-        android:text="@string/result_string" />
+        android:text="@string/city" />
 
 </RelativeLayout>

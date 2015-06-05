@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Please enter an acronym to look up." >
+        android:hint="city, country" >
 
         <requestFocus />
     </EditText>
@@ -27,14 +27,14 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:onClick="expandAcronymSync"
-         android:text="Look Up Sync" />
+         android:text="Search Sync" />
 
       <Button
          android:id="@+id/button2"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:onClick="expandAcronymAsync"
-         android:text="Look Up Async" />
+         android:text="Search Async" />
     </LinearLayout>
 
     <include

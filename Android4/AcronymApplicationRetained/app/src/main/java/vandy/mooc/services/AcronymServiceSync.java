@@ -13,6 +13,8 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 
+import org.json.JSONException;
+
 /**
  * @class AcronymServiceSync
  * 
@@ -70,8 +72,13 @@ public class AcronymServiceSync extends LifecycleLoggingService {
             @Override
             public List<WeatherData> getCurrentWeather(String weather)
                     throws RemoteException {
-                final List<WeatherData> acronymResults =
-                        Utils.getResults(weather);
+                List<WeatherData> acronymResults;
+                try {
+                    acronymResults = Utils.getResults(weather);
+                } catch (JSONException e) {
+                    acronymResults = null;
+                    e.printStackTrace();
+                }
 
                 if (acronymResults != null) {
                     Log.d(TAG, ""

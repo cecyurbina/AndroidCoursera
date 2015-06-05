@@ -252,9 +252,9 @@ public class AcronymOpsImpl implements AcronymOps {
                 protected void onPostExecute(List<WeatherData> acronymDataList) {
                     mResults = acronymDataList;
                     mActivity.get().displayResults(acronymDataList,
-                                                   "no expansions for "
+                                                   ""
                                                    + mAcronym
-                                                   + " found");
+                                                   + " not found city");
                 }
                 // Execute the AsyncTask to expand the acronym without
                 // blocking the caller.
