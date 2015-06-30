@@ -3,6 +3,7 @@ package vandy.mooc.provider.cache;
 import java.util.ArrayList;
 import java.util.List;
 
+import vandy.mooc.provider.AcronymContract;
 import vandy.mooc.provider.AcronymContract.AcronymEntry;
 import vandy.mooc.retrofit.AcronymData.AcronymExpansion;
 import android.app.AlarmManager;
@@ -98,9 +99,9 @@ public class ContentProviderTimeoutCache
             // all rows having that acronym else get the Acronym Data
             // from first row and add it to the List.
             else {
-                // TODO -- replace "0" with the expiration time of
+                // DONE -- replace "0" with the expiration time of
                 // given acronym that's obtained from the cursor.
-                Long expirationTime = 0L;
+                Long expirationTime = cursor.getLong(cursor.getColumnIndex(AcronymEntry.COLUMN_EXPIRATION_TIME));
                 
                 // Check if the acronym is expired. If true, then
                 // remove it.
@@ -136,15 +137,16 @@ public class ContentProviderTimeoutCache
      * @return AcronymExpansion
      */
     private AcronymExpansion getAcronymExpansion(Cursor cursor) {
-        // TODO -- replace "null" with the "long form" of the acronym
+        // DONE -- replace "null" with the "long form" of the acronym
         // obtained from the cursor.
-        String longForm = null;
-        // TODO -- replace "0" with the "frequency" value of the acronym
+        String longForm = cursor.getString(cursor.getColumnIndex(AcronymEntry.COLUMN_LONG_FORM));
+
+        // DONE -- replace "0" with the "frequency" value of the acronym
         // obtained from the cursor.
-        int frequency = 0;
-        // TODO -- replace "0" with the "since" value of the acronym
+        int frequency = cursor.getInt(cursor.getColumnIndex(AcronymEntry.COLUMN_FREQUENCY));
+        // DONE -- replace "0" with the "since" value of the acronym
         // obtained from the cursor.
-        int since = 0;
+        int since = cursor.getInt(cursor.getColumnIndex(AcronymEntry.COLUMN_SINCE));;
         return new AcronymExpansion(longForm,
                                     frequency,
                                     since);
