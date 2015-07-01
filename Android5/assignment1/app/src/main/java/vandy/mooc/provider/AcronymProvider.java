@@ -125,9 +125,10 @@ public class AcronymProvider extends ContentProvider {
         // row.
         switch (sUriMatcher.match(uri)) {
         case ACRONYMS:
-            // TODO - replace 0 with code that inserts a row in Table
+            // DONE - replace 0 with code that inserts a row in Table
             // and returns the row id.
-            long id = 0;
+            long id = db.insert(AcronymContract.AcronymEntry.TABLE_NAME,
+                    null, values);
 
             // Check if a new row is inserted or not.
             if (id > 0)
@@ -174,8 +175,16 @@ public class AcronymProvider extends ContentProvider {
             int returnCount = 0;
 
             try {
-                // TODO -- write the code that inserts all the
+                // DONE -- write the code that inserts all the
                 // contentValues into the SQLite database.
+                for (ContentValues value : contentValues) {
+                    final long id =
+                            db.insert(AcronymContract.AcronymEntry.TABLE_NAME,
+                                    null,
+                                    value);
+                    if (id != -1)
+                        returnCount++;
+                }
 
                 // Marks the current transaction as successful.
                 db.setTransactionSuccessful();

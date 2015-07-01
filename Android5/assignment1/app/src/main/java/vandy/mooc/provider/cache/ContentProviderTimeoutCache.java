@@ -214,10 +214,21 @@ public class ContentProviderTimeoutCache
             new ContentValues[longForms.size()];
 
         for (int i = 0; i < longForms.size(); i++) {
-            // TODO -- as you loop through the list of acronym
+            // DONE -- as you loop through the list of acronym
             // expansions create a ContentValues object that contains
             // their contents, and store this into the appropriate
             // location the cvArray.
+            cvArray[i] = new ContentValues();
+            cvArray[i].put(AcronymContract.AcronymEntry.COLUMN_ACRONYM,
+                    acronym);
+            cvArray[i].put(AcronymContract.AcronymEntry.COLUMN_EXPIRATION_TIME,
+                    expirationTime);
+            cvArray[i].put(AcronymContract.AcronymEntry.COLUMN_FREQUENCY,
+                    longForms.get(i).getFreq());
+            cvArray[i].put(AcronymContract.AcronymEntry.COLUMN_LONG_FORM,
+                    longForms.get(i).getLf());
+            cvArray[i].put(AcronymContract.AcronymEntry.COLUMN_SINCE,
+                    longForms.get(i).getSince());
         }
 
         // Use ContentResolver to bulk insert the ContentValues into
@@ -240,7 +251,9 @@ public class ContentProviderTimeoutCache
         // Initializes an array to contain selection arguments
         String[] selectionArgs = { acronym };
 
-        // TODO - delete the row(s) associated with an acronym.
+        // DONE - delete the row(s) associated with an acronym.
+        mContext.getContentResolver().delete
+                (AcronymEntry.CONTENT_URI, SELECTION_ACRONYM, selectionArgs);
     }
 
     /**
@@ -276,7 +289,33 @@ public class ContentProviderTimeoutCache
             String.valueOf(System.nanoTime()) 
         };
 
-        // TODO -- delete expired acronym expansions.
+        // DONE -- delete expired acronym expansions.
+
+        try (Cursor expiredData =
+                     mContext.getContentResolver().query
+                             (AcronymEntry.CONTENT_URI,
+                                     new String[] { AcronymEntry.COLUMN_ACRONYM },
+                                     SELECTION_EXPIRATION,
+                                     selectionArgs,
+                                     null)) {
+            // Use the expired data id's to delete the designated
+            // entries from both tables.
+            if (expiredData != null
+                    && expiredData.moveToFirst()) {
+                do {
+                    // Get the location to delete.
+                    final String deleteLocation =
+                            expiredData.getString
+                                    (expiredData.getColumnIndex
+                                            (AcronymEntry.COLUMN_ACRONYM));
+                    remove(deleteLocation);
+                } while (expiredData.moveToNext());
+            }
+        }
+
+
+
+
     }
 
     /**
