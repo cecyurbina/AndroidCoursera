@@ -7,6 +7,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 
 /**
  * Content Provider to access Acronym Database.
@@ -218,10 +219,12 @@ public class AcronymProvider extends ContentProvider {
         // rows.
         switch (sUriMatcher.match(uri)) {
         case ACRONYMS: 
-            // TODO -- replace "null" by writing code to query the
+            // DONE -- replace "null" by writing code to query the
             // entire SQLite database based on the parameters passed
             // into the method.
-            retCursor = null;
+            Log.d("$$$", AcronymContract.AcronymEntry.TABLE_NAME);
+            retCursor = mOpenHelper.getReadableDatabase().query(AcronymContract.AcronymEntry.TABLE_NAME,
+                    projection, selection, selectionArgs, null, null, sortOrder);
             break;
         case ACRONYM: 
             // Selection clause that matches row id with id passed
@@ -233,10 +236,11 @@ public class AcronymProvider extends ContentProvider {
                 + ContentUris.parseId(uri)
                 + "'";
 
-            // TODO -- replace "null" by writing code to query the
+            // DONE -- replace "null" by writing code to query the
             // SQLite database for the particular rowId based on (a
             // subset of) the parameters passed into the method.
-            retCursor = null;
+            retCursor = mOpenHelper.getReadableDatabase().query(AcronymContract.AcronymEntry.TABLE_NAME,
+                    projection, rowId, selectionArgs, null, null, sortOrder);;
             break;
         default:
             throw new UnsupportedOperationException("Unknown uri: " 
@@ -277,10 +281,10 @@ public class AcronymProvider extends ContentProvider {
         case ACRONYMS:
             // Updates the rows in the Database and returns no of rows
             // updated.
-            // TODO -- replace "0" with a call to the SQLite database
+            // DONE -- replace "0" with a call to the SQLite database
             // to update the row(s) in the database based on the
             // parameters passed into this method.
-            rowsUpdated = 0;
+            rowsUpdated = db.update(AcronymContract.AcronymEntry.TABLE_NAME, values, selection, selectionArgs);
             break;
         default:
             throw new UnsupportedOperationException("Unknown uri: " 
@@ -321,10 +325,10 @@ public class AcronymProvider extends ContentProvider {
         // appropriate rows.
         switch (sUriMatcher.match(uri)) {
         case ACRONYMS:
-            // TODO -- replace "0" with code that deletes the row(s)
+            // DONE -- replace "0" with code that deletes the row(s)
             // in the SQLite database table based on the parameters
             // passed into the method.
-            rowsDeleted = 0;
+            rowsDeleted = db.delete(AcronymContract.AcronymEntry.TABLE_NAME, selection, selectionArgs);
             break;
         default:
             throw new UnsupportedOperationException("Unknown uri: " 
