@@ -63,6 +63,7 @@ public class Video {
 	}
 
 	private long id;
+	private int rating;
 	private String title;
 	private long duration;
 	private String location;
@@ -78,6 +79,14 @@ public class Video {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	public long getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
 	}
 
 	public String getTitle() {
