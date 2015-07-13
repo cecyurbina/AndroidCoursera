@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -124,6 +125,29 @@ public class VideoSvc {
         return response;
     }
 
+	
+	@RequestMapping(value = VideoSvcApi.VIDEO_RATING_PATH, method = RequestMethod.POST)
+	public @ResponseBody VideoStatus setVideoRating(
+			@PathVariable("id") long id, @RequestParam("rating") int rating,
+			HttpServletResponse mResponse) {
+		
+		 VideoStatus videoStatus = new VideoStatus(VideoStatus.VideoState.PROCESSING);
+
+	        try {
+	            Video video = getVideoById(id);
+	            if (video != null) {
+	                saveRatingVideo(video, rating);
+	                videoStatus = new VideoStatus(VideoStatus.VideoState.READY);
+	            } else {
+	                mResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	        return videoStatus;
+	}
+	
+	
 	/**
 	 * You will need to create one or more Spring controllers to fulfill the
 	 * requirements of the assignment. If you use this file, please rename it
@@ -150,6 +174,10 @@ public class VideoSvc {
 	
     public void saveVideo(Video v, MultipartFile videoData) throws IOException {
         videoFileManager.saveVideoData(v, videoData.getInputStream());
+    }
+    
+    public void saveRatingVideo(Video v, int rating) throws IOException {
+    	v.setRating(rating);
     }
     
 	 private String getDataUrl(long videoId){

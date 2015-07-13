@@ -46,6 +46,7 @@ import java.util.Collection;
 
 import org.magnum.dataup.model.Video;
 import org.magnum.dataup.model.VideoStatus;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import retrofit.client.Response;
 import retrofit.http.Body;
@@ -135,6 +136,9 @@ public interface VideoSvcApi {
 	public static final String VIDEO_SVC_PATH = "/video";
 	
 	public static final String VIDEO_DATA_PATH = VIDEO_SVC_PATH + "/{id}/data";
+	
+	public static final String VIDEO_RATING_PATH = "rating/{id}";
+
 
 	/**
 	 * This endpoint in the API returns a list of the videos that have
@@ -193,5 +197,8 @@ public interface VideoSvcApi {
 	@Streaming
     @GET(VIDEO_DATA_PATH)
     Response getData(@Path(ID_PARAMETER) long id);
+	
+	@POST(VIDEO_RATING_PATH)
+	public VideoStatus setVideoRating(@Path(ID_PARAMETER) long id, @RequestParam("rating") int rating);
 	
 }
