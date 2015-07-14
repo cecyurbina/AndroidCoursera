@@ -21,7 +21,7 @@
        android:id="@+id/fabButton"
        android:layout_width="72dp"
        android:layout_height="72dp" 
-       android:layout_gravity="center|bottom"
+       android:layout_gravity="right|bottom"
        fab:fabDrawable="@drawable/ic_video"
        fab:fabColor="@color/theme_primary"/>
     
