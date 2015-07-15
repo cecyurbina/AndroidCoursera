@@ -17,6 +17,7 @@ import android.content.Context;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
+import android.util.Log;
 
 /**
  * Helper class that contains methods to store and get Video 
@@ -37,7 +38,7 @@ public class VideoStorageUtils {
             // often manages these files.
             final File videoStorageDir =
                 Environment.getExternalStoragePublicDirectory
-                (Environment.DIRECTORY_DCIM);
+                        (Environment.DIRECTORY_DCIM);
 
             // Create the storage directory if it does not exist
             if (!videoStorageDir.exists()) {
@@ -158,12 +159,34 @@ public class VideoStorageUtils {
             // manages these files.
             final File path =
                 Environment.getExternalStoragePublicDirectory
-                (Environment.DIRECTORY_DOWNLOADS);
+                        (Environment.DIRECTORY_DOWNLOADS);
             final File file = new File(path,
                                  videoName);
             // Make sure the Downloads directory exists.
             path.mkdirs();
             return file;
+        } else {
+            return null;
+        }
+    }
+
+    public static File getSavedVideo(String videoName){
+        if (isExternalStorageWritable()) {
+            // Create a path where we will place our video in the
+            // user's public Downloads directory. Note that you should be
+            // careful about what you place here, since the user often
+            // manages these files.
+            final File path =
+                    Environment.getExternalStoragePublicDirectory
+                            (Environment.DIRECTORY_DOWNLOADS);
+            final File file = new File(path,
+                    videoName);
+            if (file.exists()) {
+                return file;
+            }
+            else{
+                return null;
+            }
         } else {
             return null;
         }

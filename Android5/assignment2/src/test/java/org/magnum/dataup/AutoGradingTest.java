@@ -77,7 +77,7 @@ public class AutoGradingTest {
 	
 	private Video video = Video.create().withContentType("video/mp4")
 			.withDuration(123).withSubject(UUID.randomUUID().toString())
-			.withTitle(UUID.randomUUID().toString()).build();
+			.withTitle(UUID.randomUUID().toString()+".mp4").build();
 
 	private VideoSvcApi videoSvc = new RestAdapter.Builder()
 			.setEndpoint(SERVER).build()

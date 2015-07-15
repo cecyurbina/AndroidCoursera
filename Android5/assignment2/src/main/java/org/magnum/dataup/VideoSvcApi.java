@@ -137,7 +137,7 @@ public interface VideoSvcApi {
 	
 	public static final String VIDEO_DATA_PATH = VIDEO_SVC_PATH + "/{id}/data";
 	
-	public static final String VIDEO_RATING_PATH = "rating/{id}";
+	public static final String VIDEO_RATING_PATH = VIDEO_SVC_PATH + "/{id}/rating";
 
 
 	/**

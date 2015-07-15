@@ -43,6 +43,13 @@ public interface VideoServiceProxy {
         + VideoServiceProxy.ID_PARAMETER
         + "}/data";
 
+    public static final String VIDEO_RATING_PATH =
+            VIDEO_SVC_PATH
+                    + "/{"
+                    + VideoServiceProxy.ID_PARAMETER
+                    + "}/rating";
+
+
     /**
      * Sends a GET request to get the List of Videos from Video
      * Web service using a two-way Retrofit RPC call.
@@ -95,4 +102,12 @@ public interface VideoServiceProxy {
     @Streaming
     @GET(VIDEO_DATA_PATH)
     Response getData(@Path(ID_PARAMETER) long id);
+
+    /**
+     *
+     */
+    @Multipart
+    @POST(VIDEO_RATING_PATH)
+    public VideoStatus setVideoRating(@Path(ID_PARAMETER) long id,
+                                      @Part("rating") int rating);
 }

@@ -1,8 +1,11 @@
 package vandy.mooc.view;
 
+import retrofit.client.Response;
 import vandy.mooc.R;
 import vandy.mooc.common.GenericActivity;
 import vandy.mooc.common.Utils;
+import vandy.mooc.model.mediator.VideoDataMediator;
+import vandy.mooc.model.mediator.webdata.Video;
 import vandy.mooc.model.services.UploadVideoService;
 import vandy.mooc.presenter.VideoOps;
 import vandy.mooc.utils.VideoStorageUtils;
@@ -18,11 +21,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * This Activity can be used upload a selected video to a Video
@@ -81,7 +91,7 @@ public class VideoListActivity
      * Hook method called when a new instance of Activity is created.
      * One time initialization code goes here, e.g., storing Views.
      * 
-     * @param Bundle
+     * @param savedInstanceState
      *            object that contains saved state information.
      */
     @Override
@@ -112,6 +122,34 @@ public class VideoListActivity
                 }
             });
 
+        mVideosList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                // TODO Auto-generated method stub
+                Video video = (Video) mVideosList.getAdapter().getItem(position);
+                video.getTitle();
+
+                VideoDataMediator hola = new VideoDataMediator();
+                hola.getData(video, getApplicationContext());
+
+                File file = VideoStorageUtils.getSavedVideo(video.getTitle());
+                String uri;
+                if (file != null){
+                    uri = file.getAbsolutePath();
+                    Toast toast = Toast.makeText(getApplicationContext(), "Video from internal memory", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else{
+                    uri = video.getDataUrl();
+                }
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                intent.setDataAndType(Uri.parse(video.getDataUrl()), "video/mp4");
+                startActivity(intent);
+
+            }
+        });
         // Invoke the special onCreate() method in GenericActivity,
         // passing in the VideoOps class to instantiate/manage and
         // "this" to provide VideoOps with the VideoOps.View instance.

@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.RestAdapter;
+import retrofit.client.Response;
 import retrofit.mime.TypedFile;
 
 import vandy.mooc.model.mediator.webdata.Video;
 import vandy.mooc.model.mediator.webdata.VideoServiceProxy;
 import vandy.mooc.model.mediator.webdata.VideoStatus;
 import vandy.mooc.model.mediator.webdata.VideoStatus.VideoState;
+import vandy.mooc.presenter.VideoData;
 import vandy.mooc.utils.Constants;
 import vandy.mooc.utils.VideoMediaStoreUtils;
 import android.content.Context;
@@ -50,8 +52,7 @@ public class VideoDataMediator {
     
     /**
      * Constructor that initializes the VideoDataMediator.
-     * 
-     * @param context
+     *
      */
     public VideoDataMediator() {
         // Initialize the VideoServiceProxy.
@@ -66,7 +67,7 @@ public class VideoDataMediator {
      * Uploads the Video having the given Id.  This Id is the Id of
      * Video in Android Video Content Provider.
      * 
-     * @param videoId
+     * @param context
      *            Id of the Video to be uploaded.
      *
      * @return A String indicating the status of the video upload operation.
@@ -147,5 +148,15 @@ public class VideoDataMediator {
         } catch (Exception e) {
            return null; 
         }
+    }
+
+    public void getData(Video video, Context context){
+        VideoData videoData = new VideoData(context);
+        videoData.execute(video);
+    }
+
+    public void setRating(Video video, Context context){
+        VideoData videoData = new VideoData(context);
+        videoData.execute(video);
     }
 }
