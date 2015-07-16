@@ -173,8 +173,8 @@ public class VideoOps
             // Update the adapter with the List of Videos.
             mAdapter.setVideos(videos);
 
-            Utils.showToast(mVideoView.get().getActivityContext(),
-                            "Videos available from the Video Service");
+            //Utils.showToast(mVideoView.get().getActivityContext(),
+//                            "Videos available from the Video Service");
         } else {
             Utils.showToast(mVideoView.get().getActivityContext(),
                            "Please connect to the Video Service");

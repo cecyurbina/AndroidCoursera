@@ -76,6 +76,8 @@ public class VideoSvc {
 		//v.setDuration(duration);
 		int id = videos.size() + 1;
 		v.setId(id);
+		v.setTotalVotes(0);
+		v.setTotalRating(0);
 		v.setDataUrl(getDataUrl(id));
 		//v.setLocation(location);
 		videos.add(v);
@@ -136,7 +138,12 @@ public class VideoSvc {
 	        try {
 	            Video video = getVideoById(id);
 	            if (video != null) {
-	                saveRatingVideo(video, rating);
+	                int totalR = video.getTotalVotes();
+	                float totalPoints = video.getTotalRating();
+	                video.setTotalVotes(totalR + 1);
+	                video.setTotalRating(totalPoints + rating);
+	                int newRating = (int) (video.getTotalRating()/video.getTotalVotes());
+	                saveRatingVideo(video, newRating);
 	                videoStatus = new VideoStatus(VideoStatus.VideoState.READY);
 	            } else {
 	                mResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);

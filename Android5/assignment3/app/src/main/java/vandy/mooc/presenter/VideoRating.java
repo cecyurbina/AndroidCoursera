@@ -1,6 +1,7 @@
 package vandy.mooc.presenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -20,7 +21,7 @@ import vandy.mooc.view.VideoListActivity;
 /**
  * Created by Cecilia Urbina on 15/07/15.
  */
-public class VideoData extends AsyncTask<Video, Void, Void> {
+public class VideoRating extends AsyncTask<Video, Void, Void> {
     private VideoServiceProxy mVideoServiceProxy;
     private Context mContext;
     /**
@@ -28,7 +29,7 @@ public class VideoData extends AsyncTask<Video, Void, Void> {
      */
 
     //initiate vars
-    public VideoData(Context aContext) {
+    public VideoRating(Context aContext) {
         super();
         //my params here
         mContext = aContext;
@@ -42,17 +43,14 @@ public class VideoData extends AsyncTask<Video, Void, Void> {
     @Override
     protected Void doInBackground(Video... params) {
         //Response response = mVideoServiceProxy.getData(params[0].getId());
-        Response response = mVideoServiceProxy.getData(params[0].getId());
-        String fileName = params[0].getTitle();
-        VideoStorageUtils.storeVideoInExternalDirectory(mContext.getApplicationContext(),
-                response, fileName);
+        long i = 1;
+        VideoStatus vs = mVideoServiceProxy.setVideoRating(params[0].getId(), params[0].getRating());
         return null;
     }
 
 
     @Override
     protected void onPostExecute(Void result) {
-
         //do stuff
     }
 

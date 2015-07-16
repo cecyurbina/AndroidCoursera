@@ -13,6 +13,7 @@ import vandy.mooc.model.mediator.webdata.VideoServiceProxy;
 import vandy.mooc.model.mediator.webdata.VideoStatus;
 import vandy.mooc.model.mediator.webdata.VideoStatus.VideoState;
 import vandy.mooc.presenter.VideoData;
+import vandy.mooc.presenter.VideoRating;
 import vandy.mooc.utils.Constants;
 import vandy.mooc.utils.VideoMediaStoreUtils;
 import android.content.Context;
@@ -156,7 +157,7 @@ public class VideoDataMediator {
     }
 
     public void setRating(Video video, Context context){
-        VideoData videoData = new VideoData(context);
-        videoData.execute(video);
+        VideoRating videoRating = new VideoRating(context);
+        videoRating.execute(video);
     }
 }

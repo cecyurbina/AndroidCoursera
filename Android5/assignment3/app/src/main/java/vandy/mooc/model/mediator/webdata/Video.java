@@ -17,6 +17,7 @@ public class Video {
     private long duration;
     private String contentType;
     private String dataUrl;
+    private int rating;
 	
     /**
      * No-op constructor
@@ -135,7 +136,24 @@ public class Video {
     public void setContentType(String contentType) {
         this.contentType = contentType;
     }
-	
+
+    /**
+     * Get the DataUrl of Video
+     *
+     * @return dataUrl of Video
+     */
+    public int getRating() {
+        return rating;
+    }
+
+    /**
+     * Set the DataUrl of the Video.
+     */
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+
     /**
      * @return the textual representation of Video object.
      */

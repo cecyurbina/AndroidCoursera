@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vandy.mooc.R;
+import vandy.mooc.model.mediator.VideoDataMediator;
 import vandy.mooc.model.mediator.webdata.Video;
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Show the view for each Video's meta-data in a ListView.
@@ -31,7 +35,7 @@ public class VideoAdapter
     /**
      * Construtor that stores the Application Context.
      * 
-     * @param Context
+     * @param context
      */
     public VideoAdapter(Context context) {
         super();
@@ -62,7 +66,7 @@ public class VideoAdapter
     public View getView(int position,
                         View convertView,
                         ViewGroup parent) {
-        Video video = videoList.get(position);
+        final Video video = videoList.get(position);
 
         if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
@@ -70,11 +74,39 @@ public class VideoAdapter
             convertView =
                 mInflater.inflate(R.layout.video_list_item,null);
         }
-
+        final RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBar);
         TextView titleText =
             (TextView) convertView.findViewById(R.id.tvVideoTitle);
         titleText.setText(video.getTitle());
+        ratingBar.setRating(video.getRating());
+        final View finalConvertView = convertView;
+        ratingBar.setOnTouchListener(new View.OnTouchListener() {
+            VideoDataMediator vdm = new VideoDataMediator();
 
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    float touchPositionX = event.getX();
+                    float width = ratingBar.getWidth();
+                    float starsf = (touchPositionX / width) * 5.0f;
+                    int stars = (int) starsf + 1;
+                    ratingBar.setRating(stars);
+                    video.setRating(stars);
+                    vdm.setRating(video, finalConvertView.getContext());
+                    v.setPressed(false);
+                }
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    v.setPressed(true);
+                }
+
+                if (event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    v.setPressed(false);
+                }
+
+
+                return true;
+            }
+        });
         return convertView;
     }
 

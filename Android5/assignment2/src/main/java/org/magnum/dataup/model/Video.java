@@ -64,6 +64,8 @@ public class Video {
 
 	private long id;
 	private int rating;
+	private float totalRating;
+	private int totalVotes;
 	private String title;
 	private long duration;
 	private String location;
@@ -138,6 +140,23 @@ public class Video {
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
 	}
+	
+	public int getTotalVotes() {
+		return totalVotes;
+	}
+
+	public void setTotalVotes(int totalVotes) {
+		this.totalVotes = totalVotes;
+	}
+	
+	public float getTotalRating() {
+		return totalRating;
+	}
+
+	public void setTotalRating(float totalRating) {
+		this.totalRating = totalRating;
+	}
+
 
 	@Override
 	public int hashCode() {

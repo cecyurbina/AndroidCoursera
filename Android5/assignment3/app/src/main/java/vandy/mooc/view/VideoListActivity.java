@@ -131,8 +131,8 @@ public class VideoListActivity
                 Video video = (Video) mVideosList.getAdapter().getItem(position);
                 video.getTitle();
 
-                VideoDataMediator hola = new VideoDataMediator();
-                hola.getData(video, getApplicationContext());
+                VideoDataMediator vdm = new VideoDataMediator();
+                vdm.getData(video, getApplicationContext());
 
                 File file = VideoStorageUtils.getSavedVideo(video.getTitle());
                 String uri;
