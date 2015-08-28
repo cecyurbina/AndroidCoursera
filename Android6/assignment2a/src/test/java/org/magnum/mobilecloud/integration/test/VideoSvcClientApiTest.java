@@ -214,7 +214,11 @@ public class VideoSvcClientApiTest {
 	@Test
 	public void testUsersCanOnlyHaveASingleRatingForAVideo() throws Exception {
 		Video received = videoSvc.addVideo(video);
+		System.out.println("&&&&& " + received.getId());
+		System.out.println("%%%%% " + received.getId());
 		videoSvc.rateVideo(received.getId(), 1);
+		System.out.println("----" + received.getId());
+
 		videoSvc.rateVideo(received.getId(), 2);
 		AverageVideoRating rating = videoSvc.getVideoRating(received.getId());
 		

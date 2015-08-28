@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -46,6 +47,7 @@ import com.google.common.collect.Lists;
 
 import retrofit.http.Path;
 import retrofit.http.Streaming;
+
 import java.security.Principal;
 
 
@@ -104,7 +106,7 @@ public class VideoSvc {
 	public @ResponseBody VideoStatus setVideoData(
 			@PathVariable("id") long id,
 			@RequestPart(VideoSvcApi.DATA_PARAMETER) MultipartFile videoData,
-			HttpServletResponse mResponse) {
+			HttpServletResponse mResponse, Principal principal) {
 		
 		 VideoStatus videoStatus = new VideoStatus(VideoStatus.VideoState.PROCESSING);
 
@@ -145,7 +147,7 @@ public class VideoSvc {
 	
 	@RequestMapping(value = VideoSvcApi.VIDEO_SVC_PATH+"/{id}/rating/{rating}", method = RequestMethod.POST)
 	public @ResponseBody AverageVideoRating rateVideo(
-			@Path("id") long id, @Path("rating") int rating,
+			@PathVariable("id") long id, @PathVariable("rating") int rating,
 			HttpServletResponse mResponse, Principal principal) {
 		
 		 VideoStatus videoStatus = new VideoStatus(VideoStatus.VideoState.PROCESSING);
