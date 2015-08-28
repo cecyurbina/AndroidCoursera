@@ -19,10 +19,6 @@ package org.magnum.mobilecloud.video.controller;
 
 
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.Collection;
 
 import javax.annotation.PostConstruct;
@@ -30,8 +26,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.magnum.mobilecloud.video.client.VideoSvcApi;
+import org.magnum.mobilecloud.video.model.AverageVideoRating;
 import org.magnum.mobilecloud.video.model.Video;
+import org.magnum.mobilecloud.video.model.VideoRepository;
 import org.magnum.mobilecloud.video.model.VideoStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,14 +42,18 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-import retrofit.client.Response;
+import com.google.common.collect.Lists;
+
+import retrofit.http.Path;
 import retrofit.http.Streaming;
-import retrofit.mime.TypedFile;
+import java.security.Principal;
 
 
 @Controller
 public class VideoSvc {
-	private List<Video> videos = new CopyOnWriteArrayList<Video>();
+    @Autowired
+    private VideoRepository videoRepository;
+	//private List<Video> videos = new CopyOnWriteArrayList<Video>();
 	private VideoFileManager videoFileManager;
 	//private Collection<Video> videoList;
     //private AtomicLong counter;
@@ -65,7 +68,7 @@ public class VideoSvc {
 
 	@RequestMapping(value=VideoSvcApi.VIDEO_SVC_PATH, method=RequestMethod.GET)
 	public @ResponseBody Collection<Video> getVideoList() {
-		return videos;
+        return Lists.newArrayList(videoRepository.findAll());
 	}
 
 	@RequestMapping(value=VideoSvcApi.VIDEO_SVC_PATH, method=RequestMethod.POST)
@@ -74,15 +77,28 @@ public class VideoSvc {
 		//v.setContentType(contentType);
 		//v.setDataUrl(VIDEO_SVC_PATH);
 		//v.setDuration(duration);
-		int id = videos.size() + 1;
-		v.setId(id);
 		//v.setTotalVotes(0);
 		//v.setTotalRating(0);
 		//v.setDataUrl(getDataUrl(id));
-		videos.add(v);
+		
+		//int id = videos.size() + 1;
+		//v.setId(id);
+		//videos.add(v);
+        videoRepository.save(v);
 		return v;
 	}
 	
+	@RequestMapping(value=VideoSvcApi.VIDEO_SVC_PATH + "/{id}", method=RequestMethod.GET)
+    public @ResponseBody Video getVideoById(@PathVariable long id, HttpServletResponse response) {
+        Video video = videoRepository.findOne(id);
+
+        if (video == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
+
+        return video;
+    }
+
 
 	@RequestMapping(value = VideoSvcApi.VIDEO_DATA_PATH, method = RequestMethod.POST)
 	public @ResponseBody VideoStatus setVideoData(
@@ -95,6 +111,7 @@ public class VideoSvc {
 	        try {
 	            Video video = getVideoById(id);
 	            if (video != null) {
+	            	video.getUsersWhoRatingVideo();
 	                saveVideo(video, videoData);
 	                videoStatus = new VideoStatus(VideoStatus.VideoState.READY);
 	            } else {
@@ -126,31 +143,36 @@ public class VideoSvc {
     }
 
 	
-	/*@RequestMapping(value = VideoSvcApi.VIDEO_RATING_PATH, method = RequestMethod.POST)
-	public @ResponseBody VideoStatus setVideoRating(
-			@PathVariable("id") long id, @RequestParam("rating") int rating,
-			HttpServletResponse mResponse) {
+	@RequestMapping(value = VideoSvcApi.VIDEO_SVC_PATH+"/{id}/rating/{rating}", method = RequestMethod.POST)
+	public @ResponseBody AverageVideoRating rateVideo(
+			@Path("id") long id, @Path("rating") int rating,
+			HttpServletResponse mResponse, Principal principal) {
 		
 		 VideoStatus videoStatus = new VideoStatus(VideoStatus.VideoState.PROCESSING);
-
+		 AverageVideoRating average = null;
 	        try {
 	            Video video = getVideoById(id);
 	            if (video != null) {
 	                int totalR = video.getTotalVotes();
 	                float totalPoints = video.getTotalRating();
-	                video.setTotalVotes(totalR + 1);
-	                video.setTotalRating(totalPoints + rating);
-	                int newRating = (int) (video.getTotalRating()/video.getTotalVotes());
-	                saveRatingVideo(video, newRating);
-	                videoStatus = new VideoStatus(VideoStatus.VideoState.READY);
+	               if (video.ratingVideo(principal.getName())) {
+	            	   
+	            	   videoRepository.save(video);
+	            	   average = new AverageVideoRating(totalPoints, id, totalR);
+	               }
+	               else {
+		                mResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	               }
 	            } else {
 	                mResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
 	            }
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        }
-	        return videoStatus;
-	}*/
+	        return average;
+	}
+	
+	
 	
 	
 	/**
@@ -171,19 +193,20 @@ public class VideoSvc {
 	 */
 	
 	private Video getVideoById(Long id) {
-        for (Video v : videos) {
-            if (v.getId() == id) return v;
+		Video video = videoRepository.findOne(id);
+        if (video == null) {
+            return null;
         }
-        return null;
+        return video;
     }
 	
     public void saveVideo(Video v, MultipartFile videoData) throws IOException {
         videoFileManager.saveVideoData(v, videoData.getInputStream());
     }
     
-    /*public void saveRatingVideo(Video v, int rating) throws IOException {
+    public void saveRatingVideo(Video v, int rating) throws IOException {
     	v.setRating(rating);
-    }*/
+    }
     
 	 private String getDataUrl(long videoId){
          String url = getUrlBaseForLocalServer() + "/video/" + videoId + "/data";

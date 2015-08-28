@@ -1,6 +1,12 @@
 package org.magnum.mobilecloud.video.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+
+import javax.persistence.ElementCollection;
+import javax.persistence.*;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Objects;
@@ -17,9 +23,12 @@ import com.google.common.base.Objects;
  * 
  * @author jules, mitchell
  */
+@Entity
 public class Video {
 
-	private long id;
+	 @Id
+	    @GeneratedValue(strategy = GenerationType.AUTO)
+		private long id;
 
 	private String title;
 	private String url;
@@ -27,6 +36,10 @@ public class Video {
 	private String location;
 	private String subject;
 	private String contentType;
+	
+	private int rating;
+	private float totalRating;
+	private int totalVotes;
 
 	// We don't want to bother unmarshalling or marshalling
 	// any owner data in the JSON. Why? We definitely don't
@@ -35,6 +48,10 @@ public class Video {
 	@JsonIgnore
 	private String owner;
 
+
+    @ElementCollection
+    private List<String> usersWhoRatingVideo = new ArrayList<>();
+	
 	public Video() {
 	}
 
@@ -110,6 +127,63 @@ public class Video {
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
 	}
+	
+	public long getRating() {
+		return rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+	
+
+	public int getTotalVotes() {
+		return totalVotes;
+	}
+
+	public void setTotalVotes(int totalVotes) {
+		this.totalVotes = totalVotes;
+	}
+	
+	public float getTotalRating() {
+		return totalRating;
+	}
+
+	public void setTotalRating(float totalRating) {
+		this.totalRating = totalRating;
+	}
+	
+	
+	public boolean ratingVideo(String username) {
+        for (String user : usersWhoRatingVideo) {
+            if (user.equals(username)) {
+                return false;
+            }
+        }
+
+        usersWhoRatingVideo.add(username);
+        totalVotes++;
+
+        return true;
+    }
+
+    public boolean unRatingVideo(String username) {
+        for (String user : usersWhoRatingVideo) {
+            if (user.equals(username)) {
+            	usersWhoRatingVideo.remove(username);
+                totalVotes--;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public List<String> getUsersWhoRatingVideo() {
+        return usersWhoRatingVideo;
+    }
+	
+	
 
 	/**
 	 * Two Videos will generate the same hashcode if they have exactly the same

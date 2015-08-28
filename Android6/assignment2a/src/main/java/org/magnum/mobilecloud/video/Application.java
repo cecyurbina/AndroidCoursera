@@ -9,6 +9,7 @@ import org.magnum.mobilecloud.video.controller.VideoFileManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.embedded.MultiPartConfigFactory;
+import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 // Any class in this package that is annotated with @Controller is going to be
 // automatically discovered and connected to the DispatcherServlet.
 @ComponentScan("org.magnum.mobilecloud.video")
+@EntityScan("org.magnum.mobilecloud.video.model")
+
 // We use the @Import annotation to include our OAuth2SecurityConfiguration
 // as part of this configuration so that we can have security and oauth
 // setup by Spring
