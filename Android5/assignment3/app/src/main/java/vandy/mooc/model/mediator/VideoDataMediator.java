@@ -21,6 +21,7 @@ import vandy.mooc.utils.Constants;
 import vandy.mooc.utils.VideoMediaStoreUtils;
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 /**
  * Mediates communication between the Video Service and the local
@@ -157,6 +158,7 @@ public class VideoDataMediator {
      */
     public List<Video> getVideoList() {
         try {
+            Log.d("%%%", mVideoServiceProxy.getVideoList().toString());
             return (ArrayList<Video>)
                         mVideoServiceProxy.getVideoList();
         } catch (Exception e) {

@@ -44,7 +44,7 @@ public class VideoRating extends AsyncTask<Video, Void, Void> {
     protected Void doInBackground(Video... params) {
         //Response response = mVideoServiceProxy.getData(params[0].getId());
         long i = 1;
-        VideoStatus vs = mVideoServiceProxy.setVideoRating(params[0].getId(), params[0].getRating());
+        //VideoStatus vs = mVideoServiceProxy.setVideoRating(params[0].getId(), params[0].getRating());
         return null;
     }
 
