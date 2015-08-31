@@ -33,7 +33,10 @@ public interface VideoServiceProxy {
      * The path where we expect the VideoSvc to live.
      */
     public static final String VIDEO_SVC_PATH = "/video";
-	
+
+    public static final String TOKEN_PATH = "/oauth/token";
+
+
     /**
      * The path where we expect the VideoSvc to live.
      */

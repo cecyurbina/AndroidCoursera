@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.RestAdapter;
+import retrofit.client.OkClient;
 import retrofit.client.Response;
 import retrofit.mime.TypedFile;
 
@@ -12,6 +13,8 @@ import vandy.mooc.model.mediator.webdata.Video;
 import vandy.mooc.model.mediator.webdata.VideoServiceProxy;
 import vandy.mooc.model.mediator.webdata.VideoStatus;
 import vandy.mooc.model.mediator.webdata.VideoStatus.VideoState;
+import vandy.mooc.oauth.SecuredRestBuilder;
+import vandy.mooc.oauth.UnsafeHttpsClient;
 import vandy.mooc.presenter.VideoData;
 import vandy.mooc.presenter.VideoRating;
 import vandy.mooc.utils.Constants;
@@ -57,11 +60,21 @@ public class VideoDataMediator {
      */
     public VideoDataMediator() {
         // Initialize the VideoServiceProxy.
-        mVideoServiceProxy = new RestAdapter
+        /*mVideoServiceProxy = new RestAdapter
             .Builder()
             .setEndpoint(Constants.SERVER_URL)
             .build()
-            .create(VideoServiceProxy.class);
+            .create(VideoServiceProxy.class);*/
+        mVideoServiceProxy = new SecuredRestBuilder()
+                .setLoginEndpoint(Constants.SERVER_URL
+                        + VideoServiceProxy.TOKEN_PATH)
+                .setUsername("user0")
+                .setPassword("pass")
+                .setClientId("mobile")
+                .setClient(new OkClient(UnsafeHttpsClient.getUnsafeOkHttpClient()))
+                .setEndpoint(Constants.SERVER_URL)
+                .setLogLevel(RestAdapter.LogLevel.FULL).build()
+                .create(VideoServiceProxy.class);
     }
 
     /**
