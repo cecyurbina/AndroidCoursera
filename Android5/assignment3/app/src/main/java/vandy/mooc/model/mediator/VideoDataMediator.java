@@ -76,6 +76,27 @@ public class VideoDataMediator {
                 .setEndpoint(Constants.SERVER_URL)
                 .setLogLevel(RestAdapter.LogLevel.FULL).build()
                 .create(VideoServiceProxy.class);
+
+    }
+
+    public VideoDataMediator(String aUser, String aPass) {
+        // Initialize the VideoServiceProxy.
+        /*mVideoServiceProxy = new RestAdapter
+            .Builder()
+            .setEndpoint(Constants.SERVER_URL)
+            .build()
+            .create(VideoServiceProxy.class);*/
+        mVideoServiceProxy = new SecuredRestBuilder()
+                .setLoginEndpoint(Constants.SERVER_URL
+                        + VideoServiceProxy.TOKEN_PATH)
+                .setUsername(aUser)
+                .setPassword(aPass)
+                .setClientId("mobile")
+                .setClient(new OkClient(UnsafeHttpsClient.getUnsafeOkHttpClient()))
+                .setEndpoint(Constants.SERVER_URL)
+                .setLogLevel(RestAdapter.LogLevel.FULL).build()
+                .create(VideoServiceProxy.class);
+
     }
 
     /**
@@ -158,7 +179,6 @@ public class VideoDataMediator {
      */
     public List<Video> getVideoList() {
         try {
-            Log.d("%%%", mVideoServiceProxy.getVideoList().toString());
             return (ArrayList<Video>)
                         mVideoServiceProxy.getVideoList();
         } catch (Exception e) {
