@@ -11,6 +11,7 @@ import java.util.List;
 
 import retrofit.RestAdapter;
 import retrofit.client.Response;
+import vandy.mooc.model.mediator.VideoDataMediator;
 import vandy.mooc.model.mediator.webdata.Video;
 import vandy.mooc.model.mediator.webdata.VideoServiceProxy;
 import vandy.mooc.model.mediator.webdata.VideoStatus;
@@ -24,6 +25,7 @@ import vandy.mooc.view.VideoListActivity;
 public class VideoRating extends AsyncTask<Video, Void, Void> {
     private VideoServiceProxy mVideoServiceProxy;
     private Context mContext;
+    private VideoDataMediator vdm;
     /**
      * Used to enable garbage collection.
      */
@@ -33,11 +35,8 @@ public class VideoRating extends AsyncTask<Video, Void, Void> {
         super();
         //my params here
         mContext = aContext;
-        mVideoServiceProxy = new RestAdapter
-                .Builder()
-                .setEndpoint(Constants.SERVER_URL)
-                .build()
-                .create(VideoServiceProxy.class);
+        vdm = new VideoDataMediator("user0", "pass");
+
     }
 
     @Override
@@ -45,6 +44,7 @@ public class VideoRating extends AsyncTask<Video, Void, Void> {
         //Response response = mVideoServiceProxy.getData(params[0].getId());
         long i = 1;
         //VideoStatus vs = mVideoServiceProxy.setVideoRating(params[0].getId(), params[0].getRating());
+        vdm.getmVideoServiceProxy().setVideoRating(params[0].getId(), params[0].getRating());
         return null;
     }
 

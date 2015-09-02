@@ -17,6 +17,7 @@ public class Video {
     private long duration;
     private String contentType;
     private String url;
+    private int rating;
 
     /**
      * No-op constructor
@@ -142,7 +143,13 @@ public class Video {
      * @return dataUrl of Video
      */
 
+    public int getRating() {
+        return rating;
+    }
 
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
     /**
      * @return the textual representation of Video object.
      */

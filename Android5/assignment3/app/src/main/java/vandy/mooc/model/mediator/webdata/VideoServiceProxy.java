@@ -36,6 +36,9 @@ public interface VideoServiceProxy {
 
     public static final String TOKEN_PATH = "/oauth/token";
 
+    public static final String RATING_PARAMETER = "rating";
+
+
 
     /**
      * The path where we expect the VideoSvc to live.
@@ -46,11 +49,21 @@ public interface VideoServiceProxy {
         + VideoServiceProxy.ID_PARAMETER
         + "}/data";
 
+    /*public static final String VIDEO_RATING_PATH =
+            VIDEO_SVC_PATH
+                    + "/{"
+                    + VideoServiceProxy.ID_PARAMETER
+                    + "}/rating";*/
+
     public static final String VIDEO_RATING_PATH =
             VIDEO_SVC_PATH
                     + "/{"
                     + VideoServiceProxy.ID_PARAMETER
-                    + "}/rating";
+                    + "}/rating/{"
+                    + VideoServiceProxy.RATING_PARAMETER
+                    + "}";
+
+
 
 
     /**
@@ -109,8 +122,7 @@ public interface VideoServiceProxy {
     /**
      *
      */
-    @Multipart
     @POST(VIDEO_RATING_PATH)
     public VideoStatus setVideoRating(@Path(ID_PARAMETER) long id,
-                                      @Part("rating") int rating);
+                                      @Path("rating") int rating);
 }

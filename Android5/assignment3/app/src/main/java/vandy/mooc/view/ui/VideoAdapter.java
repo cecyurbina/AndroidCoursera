@@ -7,6 +7,7 @@ import vandy.mooc.R;
 import vandy.mooc.model.mediator.VideoDataMediator;
 import vandy.mooc.model.mediator.webdata.Video;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -85,13 +86,14 @@ public class VideoAdapter
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                Log.d("@@@@@", "click estrellas");
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     float touchPositionX = event.getX();
                     float width = ratingBar.getWidth();
                     float starsf = (touchPositionX / width) * 5.0f;
                     int stars = (int) starsf + 1;
                     ratingBar.setRating(stars);
-                    //video.setRating(stars);
+                    video.setRating(stars);
                     vdm.setRating(video, finalConvertView.getContext());
                     v.setPressed(false);
                 }

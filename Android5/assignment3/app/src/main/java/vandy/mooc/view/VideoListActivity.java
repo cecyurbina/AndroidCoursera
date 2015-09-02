@@ -143,26 +143,6 @@ public class VideoListActivity
                     vdm.getData(video, getApplicationContext());
                 }
 
-
-
-               /* File file = VideoStorageUtils.getSavedVideo(video.getTitle());
-                String uri;
-                if (file != null){
-                    uri = file.getAbsolutePath();
-                    Toast toast = Toast.makeText(getApplicationContext(), "Video from internal memory", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else{
-                    Log.d("&&&&&&&&&&&&&&&&&&&&6", video.getDataUrl());
-                    uri = video.getDataUrl();
-                }
-                Log.d("###############", uri);
-
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                Log.d("%%%", Uri.fromFile(file).toString());
-                intent.setDataAndType(Uri.fromFile(file), "video/mp4");
-                startActivity(intent);*/
-
             }
         });
         // Invoke the special onCreate() method in GenericActivity,

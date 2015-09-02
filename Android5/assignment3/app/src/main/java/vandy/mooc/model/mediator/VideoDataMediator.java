@@ -99,6 +99,10 @@ public class VideoDataMediator {
 
     }
 
+    public VideoServiceProxy getmVideoServiceProxy(){
+        return  mVideoServiceProxy;
+    }
+
     /**
      * Uploads the Video having the given Id.  This Id is the Id of
      * Video in Android Video Content Provider.
