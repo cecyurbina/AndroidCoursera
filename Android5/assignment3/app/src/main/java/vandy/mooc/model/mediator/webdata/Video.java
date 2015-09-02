@@ -16,7 +16,7 @@ public class Video {
     private String title;
     private long duration;
     private String contentType;
-    private String dataUrl;
+    private String url;
 
     /**
      * No-op constructor
@@ -47,7 +47,7 @@ public class Video {
         this.title = title;
         this.duration = duration;
         this.contentType = contentType;
-        this.dataUrl = dataUrl;
+        this.url = dataUrl;
     }
 
     /*
@@ -110,14 +110,14 @@ public class Video {
      * @return dataUrl of Video
      */
     public String getDataUrl() {
-        return dataUrl;
+        return url;
     }
 
     /**
      * Set the DataUrl of the Video.
      */
     public void setDataUrl(String dataUrl) {
-        this.dataUrl = dataUrl;
+        this.url = dataUrl;
     }
 
     /**
@@ -153,7 +153,7 @@ public class Video {
             "Title: "+ title + ", "+
             "Duration: "+ duration + ", "+
             "ContentType: "+ contentType + ", "+
-            "Data URL: "+ dataUrl +
+            "Data URL: "+ url +
             "}";
     }
 

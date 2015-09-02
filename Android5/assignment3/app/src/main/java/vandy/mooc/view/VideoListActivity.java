@@ -132,7 +132,7 @@ public class VideoListActivity
                 video.getTitle();
 
                 VideoDataMediator vdm = new VideoDataMediator();
-                vdm.getData(video, getApplicationContext());
+                //dm.getData(video, getApplicationContext());
 
                 File file = VideoStorageUtils.getSavedVideo(video.getTitle());
                 String uri;
@@ -142,10 +142,13 @@ public class VideoListActivity
                     toast.show();
                 }
                 else{
+                    Log.d("&&&&&&&&&&&&&&&&&&&&6", video.getDataUrl());
                     uri = video.getDataUrl();
                 }
+                Log.d("###############", uri);
+
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                intent.setDataAndType(Uri.parse(video.getDataUrl()), "video/mp4");
+                intent.setDataAndType(Uri.fromFile(file), "video/mp4");
                 startActivity(intent);
 
             }

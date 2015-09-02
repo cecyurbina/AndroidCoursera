@@ -1,6 +1,8 @@
 package vandy.mooc.view;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,8 +47,6 @@ public class Login extends Activity {
             {
                 user = userET.getText().toString();
                 pass = passET.getText().toString();
-                Log.d("$$$user", user);
-                Log.d("$$pass", pass);
                 login();
             }
         });
@@ -76,18 +76,7 @@ public class Login extends Activity {
 
     public void login(){
         vdm = new VideoDataMediator(user, pass);
-        /*if (vdm.getVideoList() == null){
-            Toast.makeText(Login.this, "Wrong username/password", Toast.LENGTH_LONG).show();
-        }*/
         getVideoList();
-        /*SecuredRestBuilder videoServiceApi = new SecuredRestBuilder()
-                .setLoginEndpoint(SERVER_URL + VideoSvcApi.TOKEN_PATH)
-                .setUsername(USERNAME)
-                .setPassword(PASSWORD)
-                .setClientId(CLIENT_ID)
-                .setClient(new OkClient(UnsafeHttpsClient.getUnsafeOkHttpClient()))
-                .setEndpoint(SERVER_URL).setLogLevel(RestAdapter.LogLevel.FULL).build()
-                .create(VideoSvcApi.class);*/
     }
 
     public void getVideoList(){
@@ -107,16 +96,18 @@ public class Login extends Activity {
 
 
         protected void onPostExecute(Integer result) {
-/*
-            showDialog("Downloaded " + result + " bytes");
-
-*/
+            Context context = getApplicationContext();
             if (listVideo == null){
-                Log.d("%%%%&&&&&", "es nulo");
+                CharSequence text = "Error in account";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
             }
             else {
-                Log.d("%%%&&&&&", "no es nulo");
-                
+                Intent intent = new Intent(context, VideoListActivity.class);
+                startActivity(intent);
+
+
             }
         }
     }

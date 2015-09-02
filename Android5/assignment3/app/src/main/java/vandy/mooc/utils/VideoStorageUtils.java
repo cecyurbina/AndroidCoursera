@@ -179,8 +179,9 @@ public class VideoStorageUtils {
             final File path =
                     Environment.getExternalStoragePublicDirectory
                             (Environment.DIRECTORY_DOWNLOADS);
-            final File file = new File(path,
-                    videoName);
+            //videoName = videoName.replace(".mp4", "");
+            String hi = path.getAbsolutePath() + File.separator + videoName;
+            final File file = new File(hi);
             if (file.exists()) {
                 return file;
             }

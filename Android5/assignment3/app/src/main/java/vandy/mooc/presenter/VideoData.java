@@ -9,10 +9,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import retrofit.RestAdapter;
+import retrofit.client.OkClient;
 import retrofit.client.Response;
 import vandy.mooc.model.mediator.webdata.Video;
 import vandy.mooc.model.mediator.webdata.VideoServiceProxy;
 import vandy.mooc.model.mediator.webdata.VideoStatus;
+import vandy.mooc.oauth.SecuredRestBuilder;
+import vandy.mooc.oauth.UnsafeHttpsClient;
 import vandy.mooc.utils.Constants;
 import vandy.mooc.utils.VideoStorageUtils;
 import vandy.mooc.view.VideoListActivity;
@@ -32,10 +35,21 @@ public class VideoData extends AsyncTask<Video, Void, Void> {
         super();
         //my params here
         mContext = aContext;
-        mVideoServiceProxy = new RestAdapter
+        //TODO: change this
+        /*mVideoServiceProxy = new RestAdapter
                 .Builder()
                 .setEndpoint(Constants.SERVER_URL)
                 .build()
+                .create(VideoServiceProxy.class);*/
+        mVideoServiceProxy = new SecuredRestBuilder()
+                .setLoginEndpoint(Constants.SERVER_URL
+                        + VideoServiceProxy.TOKEN_PATH)
+                .setUsername("user0")
+                .setPassword("pass")
+                .setClientId("mobile")
+                .setClient(new OkClient(UnsafeHttpsClient.getUnsafeOkHttpClient()))
+                .setEndpoint(Constants.SERVER_URL)
+                .setLogLevel(RestAdapter.LogLevel.FULL).build()
                 .create(VideoServiceProxy.class);
     }
 
