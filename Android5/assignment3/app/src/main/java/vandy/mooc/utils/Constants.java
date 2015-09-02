@@ -10,7 +10,7 @@ public class Constants {
      * README.md to set up the SERVER_URL.
      */
     public static final String SERVER_URL =
-        "https://192.168.1.70:8443";
+        "https://192.168.1.23:8443";
     
     /**
      * Define a constant for 1 MB.

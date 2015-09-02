@@ -1,14 +1,21 @@
 package vandy.mooc.presenter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.apache.http.client.HttpResponseException;
+
+import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.List;
 
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
 import retrofit.client.OkClient;
 import retrofit.client.Response;
 import vandy.mooc.model.mediator.webdata.Video;
@@ -26,6 +33,7 @@ import vandy.mooc.view.VideoListActivity;
 public class VideoData extends AsyncTask<Video, Void, Void> {
     private VideoServiceProxy mVideoServiceProxy;
     private Context mContext;
+    private File mFile =  null;
     /**
      * Used to enable garbage collection.
      */
@@ -55,19 +63,27 @@ public class VideoData extends AsyncTask<Video, Void, Void> {
 
     @Override
     protected Void doInBackground(Video... params) {
-        //Response response = mVideoServiceProxy.getData(params[0].getId());
-        Response response = mVideoServiceProxy.getData(params[0].getId());
-        String fileName = params[0].getTitle();
-        VideoStorageUtils.storeVideoInExternalDirectory(mContext.getApplicationContext(),
-                response, fileName);
+        try {
+            Response response = mVideoServiceProxy.getData(params[0].getId());
+            String fileName = params[0].getTitle();
+            mFile = VideoStorageUtils.storeVideoInExternalDirectory(mContext.getApplicationContext(), response, fileName);
+        } catch (RetrofitError e) {
+            System.out.println(e.getResponse().getStatus());
+        }
+
         return null;
     }
 
 
     @Override
     protected void onPostExecute(Void result) {
+        if (mFile != null){
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.fromFile(mFile));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setDataAndType(Uri.fromFile(mFile), "video/mp4");
+            mContext.startActivity(intent);
+        }
 
-        //do stuff
     }
 
 
