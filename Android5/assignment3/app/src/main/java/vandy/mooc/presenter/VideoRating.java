@@ -52,6 +52,7 @@ public class VideoRating extends AsyncTask<Video, Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
         //do stuff
+
     }
 
 

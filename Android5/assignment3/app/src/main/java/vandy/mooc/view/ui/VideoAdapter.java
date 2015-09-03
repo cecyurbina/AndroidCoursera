@@ -79,7 +79,7 @@ public class VideoAdapter
         TextView titleText =
             (TextView) convertView.findViewById(R.id.tvVideoTitle);
         titleText.setText(video.getTitle());
-        //ratingBar.setRating(video.getRating());
+        ratingBar.setRating(video.getRating());
         final View finalConvertView = convertView;
         ratingBar.setOnTouchListener(new View.OnTouchListener() {
             VideoDataMediator vdm = new VideoDataMediator();

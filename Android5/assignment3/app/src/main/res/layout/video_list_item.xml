@@ -25,7 +25,8 @@
         android:layout_gravity="left"
         android:numStars="5"
         android:stepSize="1.0"
-        android:id="@+id/ratingBar" />
+        android:id="@+id/ratingBar"
+        android:visibility="visible" />
 
 
 </LinearLayout>
