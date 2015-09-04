@@ -194,12 +194,12 @@ public class VideoDataMediator {
     }
 
     public void getData(Video video, Context context){
-        VideoData videoData = new VideoData(context);
+        VideoData videoData = new VideoData(context, mVideoServiceProxy);
         videoData.execute(video);
     }
 
     public void setRating(Video video, Context context, VideoAdapter videoAdapter){
-        VideoRating videoRating = new VideoRating(context, videoAdapter);
+        VideoRating videoRating = new VideoRating(context, videoAdapter, mVideoServiceProxy);
         videoRating.execute(video);
     }
 }

@@ -15,7 +15,6 @@ import vandy.mooc.view.ui.VideoAdapter;
 public class VideoRating extends AsyncTask<Video, Void, Void> {
     private VideoServiceProxy mVideoServiceProxy;
     private Context mContext;
-    private VideoDataMediator vdm;
     private VideoAdapter mVideoAdapter;
     private int id;
     private AverageVideoRating response;
@@ -24,11 +23,11 @@ public class VideoRating extends AsyncTask<Video, Void, Void> {
      */
 
     //initiate vars
-    public VideoRating(Context aContext, VideoAdapter videoAdapter) {
+    public VideoRating(Context aContext, VideoAdapter videoAdapter, VideoServiceProxy aVideoServiceProxy) {
         super();
         //my params here
         mContext = aContext;
-        vdm = new VideoDataMediator("user0", "pass");
+        mVideoServiceProxy = aVideoServiceProxy;
         mVideoAdapter = videoAdapter;
 
     }
@@ -40,7 +39,7 @@ public class VideoRating extends AsyncTask<Video, Void, Void> {
         long i = 1;
         id = (int) params[0].getId();
         //VideoStatus vs = mVideoServiceProxy.setVideoRating(params[0].getId(), params[0].getRating());
-        response = vdm.getmVideoServiceProxy().setVideoRating(params[0].getId(), params[0].getRating());
+        response = mVideoServiceProxy.setVideoRating(params[0].getId(), params[0].getRating());
         return null;
     }
 

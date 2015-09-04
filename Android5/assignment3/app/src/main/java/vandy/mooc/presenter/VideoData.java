@@ -39,26 +39,13 @@ public class VideoData extends AsyncTask<Video, Void, Void> {
      */
 
     //initiate vars
-    public VideoData(Context aContext) {
+    public VideoData(Context aContext, VideoServiceProxy aVideoServiceProxy) {
         super();
         //my params here
         mContext = aContext;
         //TODO: change this
-        /*mVideoServiceProxy = new RestAdapter
-                .Builder()
-                .setEndpoint(Constants.SERVER_URL)
-                .build()
-                .create(VideoServiceProxy.class);*/
-        mVideoServiceProxy = new SecuredRestBuilder()
-                .setLoginEndpoint(Constants.SERVER_URL
-                        + VideoServiceProxy.TOKEN_PATH)
-                .setUsername("user0")
-                .setPassword("pass")
-                .setClientId("mobile")
-                .setClient(new OkClient(UnsafeHttpsClient.getUnsafeOkHttpClient()))
-                .setEndpoint(Constants.SERVER_URL)
-                .setLogLevel(RestAdapter.LogLevel.FULL).build()
-                .create(VideoServiceProxy.class);
+        mVideoServiceProxy = aVideoServiceProxy;
+
     }
 
     @Override

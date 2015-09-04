@@ -155,6 +155,8 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
 			else {
 				// Add the access_token that we previously obtained to this request as 
 				// the "Authorization" header.
+				System.out.println("$$$$$ "+ "logeado");
+
 				request.addHeader("Authorization", "Bearer " + accessToken );
 			}
 		}
