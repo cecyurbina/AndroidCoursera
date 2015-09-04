@@ -308,6 +308,7 @@ public class VideoController {
             double rating = calculateAverage(videoStarRatings_.get(id));
             Video video = videoRepository.findOne(id);
             video.setRating((int)rating);
+            System.out.println("%%%%%%%%%%%%%%% " + user);
             videoRepository.save(video, user);
             return rating;
         }

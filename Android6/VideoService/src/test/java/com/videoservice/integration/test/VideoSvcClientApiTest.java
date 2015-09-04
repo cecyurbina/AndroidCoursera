@@ -103,7 +103,7 @@ public class VideoSvcClientApiTest {
 	 * 
 	 * @throws Exception
 	 */
-	/*@Test
+	@Test
 	public void testVideoAddAndList() throws Exception {
 		// Add the video
 		videoSvc.addVideo(video);
@@ -116,7 +116,7 @@ public class VideoSvcClientApiTest {
 		video.setOwner(null);
 
 		assertTrue(videos.contains(video));
-	}*/
+	}
 
 	/**
 	 * This test ensures that clients with invalid credentials cannot get access
@@ -124,7 +124,7 @@ public class VideoSvcClientApiTest {
 	 * 
 	 * @throws Exception
 	 */
-	/*@Test
+	@Test
 	public void testAccessDeniedWithIncorrectCredentials() throws Exception {
 
 		try {
@@ -136,7 +136,7 @@ public class VideoSvcClientApiTest {
 		} catch (RetrofitError e) {
 			assert (e.getCause() instanceof SecuredRestException);
 		}
-	}*/
+	}
 
 	/**
 	 * This test ensures that read-only clients can access the video list but
@@ -144,7 +144,7 @@ public class VideoSvcClientApiTest {
 	 * 
 	 * @throws Exception
 	 */
-	/*@Test
+	@Test
 	public void testReadOnlyClientAccess() throws Exception {
 
 		Collection<Video> videos = readOnlyVideoService.getVideoList();
@@ -160,22 +160,22 @@ public class VideoSvcClientApiTest {
 			JsonObject body = (JsonObject) e.getBodyAs(JsonObject.class);
 			assertEquals("insufficient_scope", body.get("error").getAsString());
 		}
-	}*/
+	}
 
-	/*@Test
+	@Test
 	public void testAddVideoMetadata() throws Exception {
 		Video received = videoSvc.addVideo(video);
 		assertEquals(video.getTitle(), received.getTitle());
 		assertEquals(video.getDuration(), received.getDuration());
 		assertTrue(received.getId() > 0);
-	}*/
+	}
 
-	/*@Test
+	@Test
 	public void testAddGetVideo() throws Exception {
 		videoSvc.addVideo(video);
 		Collection<Video> stored = videoSvc.getVideoList();
 		assertTrue(stored.contains(video));
-	}*/
+	}
 
 	@Test
 	public void testAddVideoData() throws Exception {
@@ -194,7 +194,7 @@ public class VideoSvcClientApiTest {
 		assertTrue(Arrays.equals(originalFile, retrievedFile));
 	}
 
-	/*@Test
+	@Test
 	public void testAddVideoDataForOtherUsersVideo() throws Exception {
 		Video received = videoSvc.addVideo(video);
 
@@ -208,9 +208,9 @@ public class VideoSvcClientApiTest {
 			// to the other user's video. Ideally, we should also be
 			// checking for an appropriate response code here too.
 		}
-	}*/
+	}
 	
-	/*@Test
+	@Test
 	public void testUsersCanOnlyHaveASingleRatingForAVideo() throws Exception {
 		Video received = videoSvc.addVideo(video);
 		videoSvc.rateVideo(received.getId(), 1);
@@ -228,7 +228,7 @@ public class VideoSvcClientApiTest {
 		rating = videoSvc2.getVideoRating(received.getId());
 		assertEquals(3, rating.getRating(), 0);
 		assertEquals(2, rating.getTotalRatings());
-	}*/
+	}
 
 	@Test
 	public void testGetNonExistantVideosData() throws Exception {

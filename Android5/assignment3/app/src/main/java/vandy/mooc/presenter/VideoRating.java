@@ -17,19 +17,20 @@ public class VideoRating extends AsyncTask<Video, Void, Void> {
     private Context mContext;
     private VideoAdapter mVideoAdapter;
     private int id;
+    private int position;
     private AverageVideoRating response;
     /**
      * Used to enable garbage collection.
      */
 
     //initiate vars
-    public VideoRating(Context aContext, VideoAdapter videoAdapter, VideoServiceProxy aVideoServiceProxy) {
+    public VideoRating(int aPosition, Context aContext, VideoAdapter videoAdapter, VideoServiceProxy aVideoServiceProxy) {
         super();
         //my params here
         mContext = aContext;
         mVideoServiceProxy = aVideoServiceProxy;
         mVideoAdapter = videoAdapter;
-
+        position = aPosition;
     }
 
     @Override
@@ -48,7 +49,7 @@ public class VideoRating extends AsyncTask<Video, Void, Void> {
     protected void onPostExecute(Void result) {
         //do stuff
         mVideoAdapter.showToast();
-        mVideoAdapter.update(id, (int) response.getRating());
+        mVideoAdapter.update(position, (int) response.getRating());
 
     }
 

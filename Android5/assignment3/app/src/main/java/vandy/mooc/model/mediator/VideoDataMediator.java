@@ -62,17 +62,12 @@ public class VideoDataMediator {
      *
      */
     public VideoDataMediator() {
-        // Initialize the VideoServiceProxy.
-        /*mVideoServiceProxy = new RestAdapter
-            .Builder()
-            .setEndpoint(Constants.SERVER_URL)
-            .build()
-            .create(VideoServiceProxy.class);*/
+
         mVideoServiceProxy = new SecuredRestBuilder()
                 .setLoginEndpoint(Constants.SERVER_URL
                         + VideoServiceProxy.TOKEN_PATH)
-                .setUsername("user0")
-                .setPassword("pass")
+                .setUsername("xxxxx")//secret!
+                .setPassword("xxxxx")//secret!
                 .setClientId("mobile")
                 .setClient(new OkClient(UnsafeHttpsClient.getUnsafeOkHttpClient()))
                 .setEndpoint(Constants.SERVER_URL)
@@ -84,16 +79,12 @@ public class VideoDataMediator {
 
     public VideoDataMediator(String aUser, String aPass) {
         // Initialize the VideoServiceProxy.
-        /*mVideoServiceProxy = new RestAdapter
-            .Builder()
-            .setEndpoint(Constants.SERVER_URL)
-            .build()
-            .create(VideoServiceProxy.class);*/
+
         mVideoServiceProxy = new SecuredRestBuilder()
                 .setLoginEndpoint(Constants.SERVER_URL
                         + VideoServiceProxy.TOKEN_PATH)
-                .setUsername(aUser)
-                .setPassword(aPass)
+                .setUsername(aUser) //username from login activity
+                .setPassword(aPass) //pass from login activity
                 .setClientId("mobile")
                 .setClient(new OkClient(UnsafeHttpsClient.getUnsafeOkHttpClient()))
                 .setEndpoint(Constants.SERVER_URL)
@@ -198,8 +189,8 @@ public class VideoDataMediator {
         videoData.execute(video);
     }
 
-    public void setRating(Video video, Context context, VideoAdapter videoAdapter){
-        VideoRating videoRating = new VideoRating(context, videoAdapter, mVideoServiceProxy);
+    public void setRating(int position, Video video, Context context, VideoAdapter videoAdapter){
+        VideoRating videoRating = new VideoRating(position, context, videoAdapter, mVideoServiceProxy);
         videoRating.execute(video);
     }
 }

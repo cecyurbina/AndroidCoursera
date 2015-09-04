@@ -3,8 +3,11 @@ package vandy.mooc.view;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +28,9 @@ public class Login extends Activity {
     private String pass;
     private Button buttonLogin;
     private VideoDataMediator vdm;
+    public static Context contextOfApplication;
+
+
 
 
     @Override
@@ -41,6 +47,8 @@ public class Login extends Activity {
                 user = userET.getText().toString();
                 pass = passET.getText().toString();
                 login();
+                contextOfApplication = getApplicationContext();
+
             }
         });
     }
@@ -68,6 +76,12 @@ public class Login extends Activity {
     }
 
     public void login(){
+        //put token in null to save another users token
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(
+                getApplicationContext());//token saved
+        prefs.edit().putString("token", null).commit();
+
+        //call securedrestbuilder first time
         vdm = new VideoDataMediator(user, pass);
         getVideoList();
     }
@@ -103,5 +117,9 @@ public class Login extends Activity {
 
             }
         }
+    }
+
+    public static Context getContextOfApplication(){
+        return contextOfApplication;
     }
 }

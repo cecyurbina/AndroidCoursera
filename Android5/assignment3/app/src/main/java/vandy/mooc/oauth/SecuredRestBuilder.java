@@ -7,6 +7,10 @@ package vandy.mooc.oauth;
  ** 
  */
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -28,6 +32,7 @@ import retrofit.client.Request;
 import retrofit.client.Response;
 import retrofit.converter.Converter;
 import retrofit.mime.FormUrlEncodedTypedOutput;
+import vandy.mooc.view.Login;
 
 import com.google.common.io.BaseEncoding;
 import com.google.gson.Gson;
@@ -90,8 +95,16 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
 		 */
 		@Override
 		public void intercept(RequestFacade request) {
+			Context applicationContext = Login.getContextOfApplication();
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(
+					applicationContext);
+			//get token saved
+			String token = prefs.getString("token", null);
+			System.out.println("$$$$$$$$#### > " + token);
+
+
 			// If we're not logged in, login and store the authentication token.
-			if (!loggedIn) {
+			if (!loggedIn && token == null) {
 				try {
 					// This code below programmatically builds an OAuth 2.0 password
 					// grant request and sends it to the server. 
@@ -139,8 +152,16 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
 						// Extract the access_token (bearer token) from the response so that we
 				        // can add it to future requests.
 						accessToken = new Gson().fromJson(body, JsonObject.class).get("access_token").getAsString();
-						System.out.println("$$$$$ "+ this.accessToken);
+						System.out.println("$$$$$ " + this.accessToken);
 
+
+						//token saved in shared preferences
+						prefs = PreferenceManager.getDefaultSharedPreferences(
+								applicationContext);//token saved
+
+						prefs.edit().putString("token", accessToken).commit();
+
+						System.out.println("&&&&&&&&&& " + "saved in prefs");
 						// Add the access_token to this request as the "Authorization"
 						// header.
 						request.addHeader("Authorization", "Bearer " + accessToken);	
@@ -156,6 +177,7 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
 				// Add the access_token that we previously obtained to this request as 
 				// the "Authorization" header.
 				System.out.println("$$$$$ "+ "logeado");
+				accessToken = token;
 
 				request.addHeader("Authorization", "Bearer " + accessToken );
 			}

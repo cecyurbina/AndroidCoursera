@@ -66,7 +66,7 @@ public class VideoAdapter
      * @return A View corresponding to the data at the specified
      *         position.
      */
-    public View getView(int position,
+    public View getView(final int position,
                         View convertView,
                         ViewGroup parent) {
         final Video video = videoList.get(position);
@@ -98,7 +98,7 @@ public class VideoAdapter
                     int stars = (int) starsf + 1;
                     ratingBar.setRating(stars);
                     video.setRating(stars);
-                    vdm.setRating(video, finalConvertView.getContext(), videoAdapter);
+                    vdm.setRating(position, video, finalConvertView.getContext(), videoAdapter);
                     v.setPressed(false);
                 }
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -125,7 +125,8 @@ public class VideoAdapter
     }
 
     public void update(int id, int rating) {
-        videoList.get(id-1).setRating(rating);
+        Log.d("%%%%", String.valueOf((id)));
+        videoList.get(id).setRating(rating);
         notifyDataSetChanged();
     }
 
