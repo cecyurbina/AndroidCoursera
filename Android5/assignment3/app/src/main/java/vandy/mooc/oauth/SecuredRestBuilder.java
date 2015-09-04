@@ -139,7 +139,8 @@ public class SecuredRestBuilder extends RestAdapter.Builder {
 						// Extract the access_token (bearer token) from the response so that we
 				        // can add it to future requests.
 						accessToken = new Gson().fromJson(body, JsonObject.class).get("access_token").getAsString();
-						
+						System.out.println("$$$$$ "+ this.accessToken);
+
 						// Add the access_token to this request as the "Authorization"
 						// header.
 						request.addHeader("Authorization", "Bearer " + accessToken);	

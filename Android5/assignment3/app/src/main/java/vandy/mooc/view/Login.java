@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,15 +14,9 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import retrofit.RestAdapter;
-import retrofit.client.OkClient;
 import vandy.mooc.R;
-import vandy.mooc.common.GenericAsyncTask;
 import vandy.mooc.model.mediator.VideoDataMediator;
 import vandy.mooc.model.mediator.webdata.Video;
-import vandy.mooc.oauth.SecuredRestBuilder;
-import vandy.mooc.oauth.UnsafeHttpsClient;
-import vandy.mooc.presenter.VideoOps;
 
 public class Login extends Activity {
     private EditText userET;

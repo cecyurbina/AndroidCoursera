@@ -123,6 +123,6 @@ public interface VideoServiceProxy {
      *
      */
     @POST(VIDEO_RATING_PATH)
-    public VideoStatus setVideoRating(@Path(ID_PARAMETER) long id,
-                                      @Path("rating") int rating);
+    public AverageVideoRating setVideoRating(@Path(ID_PARAMETER) long id,
+                                             @Path("rating") int rating);
 }

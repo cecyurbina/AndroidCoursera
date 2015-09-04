@@ -17,7 +17,7 @@
         android:ellipsize="end"
         android:layout_gravity="left"
         android:padding="8dp"
-        android:textColor="@android:color/black"/>
+        android:textColor="@android:color/white"/>
 
     <RatingBar
         android:layout_width="wrap_content"

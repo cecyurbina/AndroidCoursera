@@ -26,6 +26,7 @@ public class VideoAdapter
      * Allows access to application-specific resources and classes.
      */
     private final Context mContext;
+    private VideoAdapter videoAdapter;
 
     /**
      * ArrayList to hold list of Videos that is shown in ListView.
@@ -41,6 +42,7 @@ public class VideoAdapter
     public VideoAdapter(Context context) {
         super();
         mContext = context;
+        videoAdapter = null;
     }
 
     /**
@@ -81,6 +83,8 @@ public class VideoAdapter
         titleText.setText(video.getTitle());
         ratingBar.setRating(video.getRating());
         final View finalConvertView = convertView;
+        videoAdapter = this;
+
         ratingBar.setOnTouchListener(new View.OnTouchListener() {
             VideoDataMediator vdm = new VideoDataMediator();
 
@@ -94,7 +98,7 @@ public class VideoAdapter
                     int stars = (int) starsf + 1;
                     ratingBar.setRating(stars);
                     video.setRating(stars);
-                    vdm.setRating(video, finalConvertView.getContext());
+                    vdm.setRating(video, finalConvertView.getContext(), videoAdapter);
                     v.setPressed(false);
                 }
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -119,6 +123,12 @@ public class VideoAdapter
         videoList.add(video);
         notifyDataSetChanged();
     }
+
+    public void update(int id, int rating) {
+        videoList.get(id-1).setRating(rating);
+        notifyDataSetChanged();
+    }
+
 
     /**
      * Removes a Video from the Adapter and notify the change.
@@ -162,5 +172,12 @@ public class VideoAdapter
      */
     public long getItemId(int position) {
         return position;
+    }
+
+    public void showToast(){
+        CharSequence text = "General average";
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(mContext, text, duration);
+        toast.show();
     }
 }

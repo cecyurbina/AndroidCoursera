@@ -116,7 +116,7 @@ public class VideoController {
         if (video != null) {
              videoRepository.setVideoRating(id, rating, principal.getName());
              response.setStatus(HttpServletResponse.SC_OK);
-             return new AverageVideoRating(videoRepository.getVideoRating(id), id, videoRepository.getTotalRatings(id));
+             return new AverageVideoRating(videoRepository.getVideoRating(id, principal.getName()), id, videoRepository.getTotalRatings(id));
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Video not found");
             return null;
@@ -137,7 +137,7 @@ public class VideoController {
         Video video = videoRepository.findOne(id);
         
         if (video != null) {
-            return new AverageVideoRating(videoRepository.getVideoRating(id), id, videoRepository.getTotalRatings(id));
+            return new AverageVideoRating(videoRepository.getVideoRating(id, principal.getName()), id, videoRepository.getTotalRatings(id));
         } else {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Video not found");
             return null;
@@ -281,9 +281,6 @@ public class VideoController {
                 int listSize = ratingList.size();
                 for (int i = 0;i<listSize;i++) {
                     if (ratingList.get(i).getUser().compareTo(user) == 0) {
-                        Video video = videoRepository.findOne(id);
-                        video.setRating((int)rating);
-                        videoRepository.save(video, user);
                         ratingList.get(i).setRating(rating);
                         return;
                     }
@@ -307,8 +304,11 @@ public class VideoController {
             return returnValue;
     	}
 
-        public double getVideoRating (long id) {
+        public double getVideoRating (long id, String user) {
             double rating = calculateAverage(videoStarRatings_.get(id));
+            Video video = videoRepository.findOne(id);
+            video.setRating((int)rating);
+            videoRepository.save(video, user);
             return rating;
         }
         

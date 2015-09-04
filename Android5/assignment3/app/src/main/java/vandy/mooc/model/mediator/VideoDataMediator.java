@@ -19,6 +19,8 @@ import vandy.mooc.presenter.VideoData;
 import vandy.mooc.presenter.VideoRating;
 import vandy.mooc.utils.Constants;
 import vandy.mooc.utils.VideoMediaStoreUtils;
+import vandy.mooc.view.ui.VideoAdapter;
+
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
@@ -76,6 +78,7 @@ public class VideoDataMediator {
                 .setEndpoint(Constants.SERVER_URL)
                 .setLogLevel(RestAdapter.LogLevel.FULL).build()
                 .create(VideoServiceProxy.class);
+
 
     }
 
@@ -195,8 +198,8 @@ public class VideoDataMediator {
         videoData.execute(video);
     }
 
-    public void setRating(Video video, Context context){
-        VideoRating videoRating = new VideoRating(context);
+    public void setRating(Video video, Context context, VideoAdapter videoAdapter){
+        VideoRating videoRating = new VideoRating(context, videoAdapter);
         videoRating.execute(video);
     }
 }
